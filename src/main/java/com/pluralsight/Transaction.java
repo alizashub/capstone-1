@@ -1,6 +1,7 @@
 package com.pluralsight;
 
 public class Transaction {
+
     // declaring the fields
     private String date;
     private String time;
@@ -9,7 +10,7 @@ public class Transaction {
     private double amount;
 
     // passing the parameters for the constructor
-    public Transaction (String date, String time, String description, String Vendor, double amount) {
+    public Transaction(String date, String time, String description, String Vendor, double amount) {
 
         this.date = date;
         this.time = time;
@@ -38,7 +39,7 @@ public class Transaction {
         return amount;
     }
 
-    public String toString() {
+    public String toCsvFormat() {
         return date + " | " + time + " | " + description + " | " + vendor + " | " + amount;
     }
 
