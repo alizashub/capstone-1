@@ -1,29 +1,40 @@
 package com.pluralsight;
 
-public class Transaction {
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
-    // declaring the fields
-    private String date;
-    private String time;
+public class Transaction {
+    // fields for the transaction object
+    private LocalDate date;
+    private LocalTime time;
     private String description;
     private String vendor;
     private double amount;
 
-    // passing the parameters for the constructor
-    public Transaction(String date, String time, String description, String Vendor, double amount) {
+    // Formatters to keep date/time consistent
+    private static final DateTimeFormatter FORMATTED_DATE = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter FORMATTED_TIME = DateTimeFormatter.ofPattern("HH:mm:ss");
 
+    // Constructor
+    public Transaction(LocalDate date, LocalTime time, String description, String vendor, double amount) {
+        // assigning parameter to object's field eg. field ( this.date) = parameter ( date )
         this.date = date;
         this.time = time;
-        this.description = description;
-        this.vendor = vendor;
+        // using null safety to prevent crash
+        // using the conditional operator ( the if-else shorthand )
+        this.description = description == null ? "" : description;
+        this.vendor = vendor == null ? "" : vendor;
         this.amount = amount;
     }
 
-    public String getDate() {
+// Getters to be able to access the private data inside the transaction object
+
+    public LocalDate getDate() {
         return date;
     }
 
-    public String getTime() {
+    public LocalTime getTime() {
         return time;
     }
 
@@ -39,8 +50,15 @@ public class Transaction {
         return amount;
     }
 
-    public String toCsvFormat() {
-        return date + " | " + time + " | " + description + " | " + vendor + " | " + amount;
+    // Simple escaping so if someone has '|' in a description or vendor name it won't break the CSV split
+    private static String escapePipes(String s) {
+        return s.replace("|", "\\|");
+    }
+
+    // creating a method to convert the five fields into one line
+    public String toCsvLine() {
+        return FORMATTED_DATE.format(date) + "|" + FORMATTED_TIME.format(time) + "|" + escapePipes(description) + "|" + escapePipes(vendor) + "|" + amount;
+
     }
 
 }
