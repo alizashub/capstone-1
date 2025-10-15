@@ -1,4 +1,5 @@
 package com.pluralsight;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -14,8 +15,8 @@ public class Transaction {
     // Constructor
     public Transaction(String dateString, String timeString, String description, String vendor, double amount) {
         // assigning parameter to object's field eg. field ( this.date) = parameter ( date )
-        this.date = LocalDate.parse(dateString,DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        this.time = LocalTime.parse(timeString,DateTimeFormatter.ofPattern("HH:mm:ss"));
+        this.date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        this.time = LocalTime.parse(timeString, DateTimeFormatter.ofPattern("HH:mm:ss"));
         // using null safety to prevent crash
         // using the conditional operator ( the if-else shorthand )
         this.description = description == null ? "" : description;
@@ -49,10 +50,13 @@ public class Transaction {
     private static String escapePipes(String s) {
         return s.replace("|", "\\|");
     }
+    public static String getCurrentTimeString() {
+        return LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+    }
 
     // creating a method to convert the five fields into one line
     public String toCsvLine() {
-        return date + "|" + time + "|" + escapePipes(description) + "|" + escapePipes(vendor) + "|" + amount;
+        return date + "|" + time.format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "|" + escapePipes(description) + "|" + escapePipes(vendor) + "|" + amount;
 
     }
 
