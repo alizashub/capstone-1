@@ -1,4 +1,4 @@
 package com.pluralsight;
 
-public class Homescreen {
+public class App {
 }

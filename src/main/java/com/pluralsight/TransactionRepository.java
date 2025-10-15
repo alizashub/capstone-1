@@ -1,64 +1,56 @@
 package com.pluralsight;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class TransactionRepository {
 
-    private static final String FILE_PATH = "src/main/resources/transactions.csv";
-
     public ArrayList<Transaction> readTransactions() {
-        ArrayList<Transaction> transactions = new ArrayList<>();
-
+        ArrayList<Transaction> listOfTransactions = new ArrayList<Transaction>();
         try {
-            FileReader fileReader = new FileReader(FILE_PATH);
+            FileReader fileReader = new FileReader("src/main/resources/transactions.csv");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                String[] parts = line.split("\\|");
-                if (parts.length == 5) {
-                    String date = parts[0];
-                    String time = parts[1];
-                    String description = parts[2];
-                    String vendor = parts[3];
-                    double amount = Double.parseDouble(parts[4]);
+            String eachLine;
+            bufferedReader.readLine();
+            while ((eachLine = bufferedReader.readLine()) != null) {
+                String[] parts = eachLine.split("\\|");
 
-                    Transaction transaction = new Transaction(date, time, description, vendor, amount);
-                    transactions.add(transaction);
-                }
+                String date = parts[0];
+                String time = parts[1];
+                String description = parts[2];
+                String vendor = parts[3];
+                double amount = Double.parseDouble(parts[4]);
+
+                Transaction t = new Transaction(date, time, description, vendor, amount);
+                listOfTransactions.add(t);
             }
 
             bufferedReader.close();
             fileReader.close();
-
-        } catch (FileNotFoundException e) {
-            System.out.println("No existing transactions found. A new file will be created when you add data.");
-        } catch (IOException e) {
-            System.out.println("Error reading file: " + e.getMessage());
         } catch (Exception e) {
-            System.out.println("Error processing transactions: " + e.getMessage());
+            System.out.println("Error reading transactions: " + e.getMessage());
         }
 
-        return transactions;
+        return listOfTransactions;
     }
-    // Save a single transaction to the file
+
     public void saveTransaction(Transaction transaction) {
         try {
-            // Create writer objects inside try
-            FileWriter fileWriter = new FileWriter(FILE_PATH, true); // append mode
+            FileWriter fileWriter = new FileWriter("src/main/resources/transactions.csv", true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-
-
-            bufferedWriter.write(transaction.toCsvLine());
+            bufferedWriter.write(transaction.toCsvFormat());
             bufferedWriter.newLine();
 
-            // Close writers
+            bufferedWriter.flush();
             bufferedWriter.close();
             fileWriter.close();
 
         } catch (IOException e) {
-            System.out.println("Error writing transaction: " + e.getMessage());
+            System.out.println("Error saving transaction: " + e.getMessage());
         }
     }
 }
