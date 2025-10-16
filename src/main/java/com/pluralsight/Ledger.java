@@ -31,7 +31,16 @@ public class Ledger {
             System.out.println("X) Exit");
 
             System.out.print("Choose an option: ");
-            String choice = myScanner.nextLine().trim().toUpperCase();
+            String choice;
+            try {
+                choice = myScanner.nextLine().trim().toUpperCase();
+                if (choice.isEmpty()) {
+                    System.out.println("Please enter a valid option.");
+                    continue;
+                }
+            } catch (Exception e) {
+                System.out.println("Input error" + e.getMessage());
+            }
 
             switch (choice) {
                 case "D":
@@ -47,43 +56,49 @@ public class Ledger {
                     running = false;
                     break;
                 default:
-                    System.out.println("Invalid option. Try again.");
+                    System.out.println("Invalid Option. Try Again.");
             }
         }
-        System.out.println("Exiting application. Goodbye!");
+        myScanner.close();
+        System.out.println("Exiting Application. Goodbye!");
     }
 
     //Add Deposit
     private void addDeposit() {
         System.out.println("\n=== MAKE DEPOSIT ===");
 
-        System.out.print("Enter description: ");
+        System.out.print(" Enter Deposit Description : ");
         String depositDescription = (myScanner.nextLine().trim());
 
         if (depositDescription.isEmpty()) {
-            System.out.println("Description cannot be empty!");
+            System.out.println("Deposit Description Cannot Be Empty!");
             return;
         }
 
-        System.out.print("Enter vendor: ");
+        System.out.print("Enter Deposit Vendor: ");
         String depositVendor = (myScanner.nextLine().trim());
         if (depositVendor.isEmpty()) {
-            System.out.println("Vendor name cannot be empty!");
+            System.out.println("Vendor Name Cannot Be Empty!");
             return;
         }
-
-            System.out.print("Enter amount: ");
+        System.out.print("Please Enter Deposit Amount: ");
+        try {
             double depositAmount = Double.parseDouble(myScanner.nextLine().trim());
 
             if (depositAmount <= 0) {
                 System.out.println("Deposit amount must be positive!");
                 return;
             }
+        } catch (NumberFormatException e) {
+            System.out.println("Despsit Amount Invalid. Please Enter A Number.");
+            return;
+        }
 
         String depositDate = LocalDate.now().toString();
         String depositTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
         Transaction depositTransaction = new Transaction(depositDate, depositTime, depositDescription, depositVendor, depositAmount);
+        System.out.println("You Are Despositing $" + depositAmount + "to" + depositVendor);
         repository.saveTransaction(depositTransaction);
         transactions.add(depositTransaction);
         System.out.println("Deposit added successfully!");

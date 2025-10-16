@@ -9,7 +9,7 @@ public class Transaction {
     private String vendor;
     private double amount;
 
-
+// creating constructor 
     public Transaction(String date, String time, String description, String vendor, double amount) {
         this.date = date.trim();
         this.time = time.trim();
@@ -18,6 +18,7 @@ public class Transaction {
         this.amount = amount;
     }
 
+    // getters
     public String getDate() {
         return date;
     }
@@ -37,14 +38,9 @@ public class Transaction {
     public double getAmount() {
         return amount;
     }
-
+// csv format method
     public String toCsvFormat() {
         return date + "|" + time + "|" + description + "|" + vendor + "|" + amount;
     }
 
-    @Override
-    public String toString() {
-        return String.format("%s | %s | %s | %s | $%.2f",
-                date, time, description, vendor, amount);
-    }
 }
