@@ -45,7 +45,6 @@ public class TransactionRepository {
             bufferedWriter.write(transaction.toCsvFormat());
             bufferedWriter.newLine();
 
-            bufferedWriter.flush();
             bufferedWriter.close();
             fileWriter.close();
 

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Ledger {
@@ -12,12 +13,12 @@ public class Ledger {
     private Scanner myScanner;
     private ArrayList<Transaction> transactions;
 
+    // Constructor
     public Ledger() {
         repository = new TransactionRepository();
         myScanner = new Scanner(System.in);
         transactions = repository.readTransactions();
     }
-
 
     public void home() {
         boolean running = true;
@@ -73,7 +74,6 @@ public class Ledger {
         String depositTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
         Transaction depositTransaction = new Transaction(depositDate, depositTime, depositDescription, depositVendor, depositAmount);
-
         repository.saveTransaction(depositTransaction);
         transactions.add(depositTransaction);
         System.out.println("Deposit added successfully!");
@@ -88,13 +88,12 @@ public class Ledger {
         String paymentVendor = myScanner.nextLine();
 
         System.out.print("Enter amount: ");
-        double paymentAmount = -Math.abs(Double.parseDouble(myScanner.nextLine())); // ensure negative
+        double paymentAmount = -Math.abs(Double.parseDouble(myScanner.nextLine().trim()));
 
         String paymentDate = LocalDate.now().toString();
-        String paymentTime = LocalDate.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+        String paymentTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
         Transaction paymentTransaction = new Transaction(paymentDate, paymentTime, paymentDescription, paymentVendor, paymentAmount);
-
         repository.saveTransaction(paymentTransaction);
         transactions.add(paymentTransaction);
         System.out.println("Payment recorded successfully!");
@@ -138,19 +137,15 @@ public class Ledger {
         }
     }
 
-    @Override
-    public String toString() {
-        return String.format()
-    }
-
     private void showAll() {
         if (transactions.isEmpty()) {
             System.out.println("No transactions to display.");
             return;
         }
         System.out.println("=== ALL TRANSACTIONS ===");
-        System.out.println("Date       Time     Description       Vendor       Amount");
-
+        for (int i = transactions.size() - 1; i >= 0; i--) {  // newest first
+            Transaction t = transactions.get(i);
+            System.out.println(t.getDate() + " | " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + " | " + t.getAmount());
 
         }
     }
@@ -162,26 +157,26 @@ public class Ledger {
         }
         for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction t = transactions.get(i);
-            if (t.getAmount() > 0) { // Only positive amounts
-                System.out.println(t);
+            if (t.getAmount() > 0) {
+                System.out.println(t.getDate() + "|" + t.getDate() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount());
             }
         }
     }
 
-    private void showPayments() {
-        if (transactions.isEmpty()) {
-            System.out.println("No transactions to display.");
-            return;
-        }
-        System.out.println("\n=== PAYMENTS ONLY ===");
-        System.out.println("Date       Time       Description       Vendor       Amount");
-        for (int i = transactions.size() - 1; i >= 0; i--) {
-            Transaction t = transactions.get(i);
-            if (t.getAmount() < 0) { // Payments are negative
-                System.out.println(t);
-            }
+private void showPayments() {
+    if (transactions.isEmpty()) {
+        System.out.println("No transactions to display.");
+        return;
+    }
+    System.out.println("\n=== PAYMENTS ONLY ===");
+    System.out.println("Date       Time       Description       Vendor       Amount");
+    for (int i = transactions.size() - 1; i >= 0; i--) {
+        Transaction t = transactions.get(i);
+        if (t.getAmount() < 0) { // Payments are negative
+            System.out.println(t.getDate()+"|"+t.getDate()+ "|"+t.getDescription()+ "|"+ t.getVendor()+ "|"+ t.getAmount());
         }
     }
+}
 
     private void showReports() {
         boolean inReports = true;
