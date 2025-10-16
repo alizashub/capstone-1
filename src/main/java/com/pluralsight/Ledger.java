@@ -27,21 +27,23 @@ public class Ledger {
         boolean running = true;
 
         while (running) {
-            System.out.println("*************");
-            System.out.println(" HOME MENU - What Shall We Do Today," + userName +"?");
-            System.out.println("*************");
-            System.out.println("D) Add Deposit ");
-            System.out.println("P) Make A Payment");
-            System.out.println("L) Go To Ledger - See Your Transaction History");
-            System.out.println("X) Exit The Program");
-            System.out.print("Choose An Option: ");
+            System.out.println("                 -----------                          ");
+            System.out.println("                  HOME MENU                           ");
+            System.out.println("                 -----------                          ");
+            System.out.println("What Shall We Do Today? ");
+            System.out.println("A) Add A Deposit ");
+            System.out.println("B) Make A Payment ");
+            System.out.println("C) Go To The Ledger ");
+            System.out.println("X) Exit The Program ");
+            System.out.print("\n" + userName + "," + " Type The LETTER Of Your Choice From Above To Get Started : ");
 
             String choice = "";
+            choice = myScanner.nextLine().trim().toUpperCase();
+
             try {
-                 choice = myScanner.nextLine().trim().toUpperCase();
+                choice = myScanner.nextLine().trim().toUpperCase();
                 if (choice.isEmpty()) {
                     System.out.println("Please Choose A Valid Option.");
-                    continue;
                 }
             } catch (Exception e) {
                 System.out.println("Input Error" + e.getMessage());
@@ -50,13 +52,13 @@ public class Ledger {
 
 
             switch (choice) {
-                case "D":
+                case "A":
                     addDeposit();
                     break;
-                case "P":
+                case "B":
                     makePayment();
                     break;
-                case "L":
+                case "C":
                     showLedger();
                     break;
                 case "X":
@@ -70,11 +72,11 @@ public class Ledger {
     }
 
     private void askUserName() {
-        System.out.print("Hey There! What's your name?");
+        System.out.print("Hey There! What's Your Name?");
         userName = myScanner.next().trim();
 
         while (userName.isEmpty()) {
-            System.out.println("Oops, you forgot to type in your name! Let's try that again.");
+            System.out.println("Oops, You Forgot To Type In Your Name! Let's Try That Again.");
             userName = myScanner.nextLine().trim();
         }
         System.out.println("Welcome , " + userName + "! Let's Get Your Finances Organized!");
@@ -82,62 +84,83 @@ public class Ledger {
 
     //Add Deposit
     private void addDeposit() {
-        System.out.println("***********************");
-        System.out.println( userName + " DEPOSIT INFORMATION  ");
-        System.out.println("***********************");
+        System.out.println("\n");
+        System.out.println("         " + userName.toUpperCase() + "'S " + " DEPOSIT INFORMATION       ");
 
-        System.out.print("Enter Deposit Description : ");
+        System.out.print("\nEnter Deposit's Description : ");
         String depositDescription = (myScanner.nextLine().trim());
 
         if (depositDescription.isEmpty()) {
-            System.out.println("Deposit Description Cannot Be Empty!");
+            System.out.println(userName + "We Need A Description To Add This Deposit. Let's Try That Again.");
             return;
         }
 
-        System.out.print("Enter Deposit Vendor: ");
+        System.out.print("Enter Deposit's Vendor Name: ");
         String depositVendor = (myScanner.nextLine().trim());
         if (depositVendor.isEmpty()) {
-            System.out.println("Vendor Name Cannot Be Empty!");
+            System.out.println("Don't Leave Me Hanging! Please Enter A Vendor Name. ");
             return;
         }
-        double depositAmount = 0;
-        System.out.print("Please Enter Deposit Amount: ");
-        try {
-            depositAmount = Double.parseDouble(myScanner.nextLine().trim());
 
-            if (depositAmount <= 0) {
-                System.out.println("Deposit Amount Must Be Positive!");
-                return;
+        double depositAmount = 0;
+        boolean validAmount = false;
+
+        while (!validAmount) {
+            System.out.print("Enter Deposit's Amount: ");
+            String amountInput = myScanner.nextLine().trim();
+            try {
+                depositAmount = Double.parseDouble(amountInput);
+                if (depositAmount <= 0) {
+                    System.out.println("Deposits must be positive. Give it another shot!");
+                } else {
+                    validAmount = true;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("That Doesn't Look Like A Valid Number. Let's Try Again. ");
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Deposit Amount Invalid. Please Enter A Number.");
-            return;
         }
 
         String depositDate = LocalDate.now().toString();
         String depositTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
         Transaction depositTransaction = new Transaction(depositDate, depositTime, depositDescription, depositVendor, depositAmount);
-        System.out.println( userName + "You Are Despositing $" + depositAmount + " to " + depositVendor + ". \n");
+        System.out.println(userName + " You Are Despositing $ " + depositAmount + " to " + depositVendor + ". \n");
         repository.saveTransaction(depositTransaction);
         transactions.add(depositTransaction);
         System.out.println("Deposit Transaction Was Added Successfully!");
+        System.out.println("\nLet's Go Back Home! What Else Would You Like To Do Today?");
     }
 
     // MakePayment
     private void makePayment() {
-        System.out.println("***********************");
-        System.out.println("  PAYMENT INFORMATION  ");
-        System.out.println("***********************");
+        System.out.println("\n");
+        System.out.println("         " + userName.toUpperCase() + "'S " + " PAYMENT INFORMATION       ");
 
-        System.out.print("Enter Payment Description: ");
+        System.out.print("\nEnter Payment's Description: ");
         String paymentDescription = myScanner.nextLine();
 
-        System.out.print("Enter Payment Vendor: ");
+        System.out.print("Enter Payment's Vendor: ");
         String paymentVendor = myScanner.nextLine();
 
-        System.out.print("Enter Payment Amount: ");
-        double paymentAmount = -Math.abs(Double.parseDouble(myScanner.nextLine().trim()));
+        double paymentAmount = 0;
+        boolean validPaymentInput = false;
+
+        while (!validPaymentInput) {
+            System.out.print("Enter Payment's Amount: ");
+            String paymentInput = myScanner.nextLine().trim();
+            try {
+                paymentAmount = Double.parseDouble(paymentInput);
+
+                if (paymentAmount <= 0) {
+                    System.out.println("Payment must be positive. Give it another shot.");
+                } else {
+                    paymentAmount = -Math.abs(paymentAmount);
+                    validPaymentInput = true;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("That Does Not Look like A Valid Number. Let's Try Again.");
+            }
+        }
 
         String paymentDate = LocalDate.now().toString();
         String paymentTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
@@ -147,21 +170,23 @@ public class Ledger {
         repository.saveTransaction(paymentTransaction);
         transactions.add(paymentTransaction);
         System.out.println("Payment Transaction Was Recorded Successfully!");
+        System.out.println("\nLet's Go Back Home! What Else Would You Like To Do Today?");
+
     }
 
     public void showLedger() {
         boolean inLedger = true;
 
         while (inLedger) {
-            System.out.println("**********************");
-            System.out.println("      LEDGER MENU     ");
-            System.out.println("**********************");
+            System.out.println("                  -----------                          ");
+            System.out.println("                  LEDGER MENU                         ");
+            System.out.println("                  -----------                          ");
             System.out.println("A) View All Transactions");
-            System.out.println("D) View Deposits Only");
-            System.out.println("P) View Payments Only");
-            System.out.println("R) View My Reports");
-            System.out.println("H) Home Menu");
-            System.out.print("Choose An Option: ");
+            System.out.println("B) View Deposits Only");
+            System.out.println("C) View Payments Only");
+            System.out.println("D) View My Reports");
+            System.out.println("X) Home Menu");
+            System.out.print("\n" + userName + "," + " Type The LETTER Of Your Choice From Above To View Your Transaction History : ");
 
             String choice = myScanner.nextLine().trim().toUpperCase();
 
@@ -169,20 +194,20 @@ public class Ledger {
                 case "A":
                     showAll();
                     break;
-                case "D":
+                case "B":
                     showDeposits();
                     break;
-                case "P":
+                case "C":
                     showPayments();
                     break;
-                case "R":
+                case "D":
                     showReports();
                     break;
-                case "H":
+                case "X":
                     inLedger = false;
                     break;
                 default:
-                    System.out.println("Invalid option. Try again.");
+                    System.out.println("Invalid Option. Please Try Again.");
 
             }
         }
@@ -193,13 +218,12 @@ public class Ledger {
             System.out.println("No transactions to display.");
             return;
         }
-        System.out.println("**********************");
+        System.out.println("\n");
         System.out.println("   ALL TRANSACTIONS   ");
-        System.out.println("**********************");
+
         for (int i = transactions.size() - 1; i >= 0; i--) {  // newest first
             Transaction t = transactions.get(i);
             System.out.println(t.getDate() + " | " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + " | " + t.getAmount());
-
         }
     }
 
