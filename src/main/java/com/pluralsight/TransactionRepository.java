@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class TransactionRepository {
-    private static final String FILE_PATH = "transactions.csv";
+    private static final String FILE_PATH = "src/main/resources/transactions.csv";
 
     public ArrayList<Transaction> readTransactions() {
         // creating an empty list to store transactions read from the file
@@ -20,7 +20,6 @@ public class TransactionRepository {
                     System.out.println("Skipping invalid line : " + eachLine);
                     continue;
                 }
-
                 String date = parts[0];
                 String time = parts[1];
                 String description = parts[2];
@@ -40,7 +39,7 @@ public class TransactionRepository {
     public void saveTransaction(Transaction transaction) {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(FILE_PATH, true))){
                 bufferedWriter.write(transaction.toCsvFormat());
-                bufferedWriter.newLine(); // ensure seperation
+                bufferedWriter.newLine();
             } catch(IOException e){
                 System.out.println("Error saving transaction: " + e.getMessage());
             }
