@@ -72,7 +72,6 @@ public class Ledger {
             return;
         }
 
-        try {
             System.out.print("Enter amount: ");
             double depositAmount = Double.parseDouble(myScanner.nextLine().trim());
 
@@ -80,10 +79,6 @@ public class Ledger {
                 System.out.println("Deposit amount must be positive!");
                 return;
             }
-    } catch (NumberFormatException e) {
-            System.out.println("Invalid amount! Please enter a valid number.");
-            return;
-        }
 
         String depositDate = LocalDate.now().toString();
         String depositTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
