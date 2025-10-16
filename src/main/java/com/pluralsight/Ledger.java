@@ -176,7 +176,9 @@ public class Ledger {
             System.out.println("No transactions to display.");
             return;
         }
-        System.out.println("=== ALL TRANSACTIONS ===");
+        System.out.println("**********************");
+        System.out.println("   ALL TRANSACTIONS   ");
+        System.out.println("**********************");
         for (int i = transactions.size() - 1; i >= 0; i--) {  // newest first
             Transaction t = transactions.get(i);
             System.out.println(t.getDate() + " | " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + " | " + t.getAmount());
@@ -198,10 +200,12 @@ public class Ledger {
     }
 
     private void showPayments() {
-        System.out.println("*************************");
-        System.out.println("       PAYMENTS ONLY     ");
-        System.out.println("*************************");
-        System.out.println("Date    Time       Description       Vendor       Amount");
+        System.out.println("""
+                        *************************
+                               PAYMENTS ONLY     
+                        *************************
+                        Date  Time  Description   Vendor   Amount
+                        """);
         for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction t = transactions.get(i);
             if (t.getAmount() < 0) { // Payments are negative
