@@ -31,7 +31,7 @@ public class Ledger {
             System.out.println("X) Exit");
 
             System.out.print("Choose an option: ");
-            String choice;
+            String choice = "";
             try {
                 choice = myScanner.nextLine().trim().toUpperCase();
                 if (choice.isEmpty()) {
@@ -40,6 +40,7 @@ public class Ledger {
                 }
             } catch (Exception e) {
                 System.out.println("Input error" + e.getMessage());
+                continue;
             }
 
             switch (choice) {
@@ -67,7 +68,7 @@ public class Ledger {
     private void addDeposit() {
         System.out.println("\n=== MAKE DEPOSIT ===");
 
-        System.out.print(" Enter Deposit Description : ");
+        System.out.print("Enter Deposit Description : ");
         String depositDescription = (myScanner.nextLine().trim());
 
         if (depositDescription.isEmpty()) {
@@ -78,12 +79,13 @@ public class Ledger {
         System.out.print("Enter Deposit Vendor: ");
         String depositVendor = (myScanner.nextLine().trim());
         if (depositVendor.isEmpty()) {
-            System.out.println("Vendor Name Cannot Be Empty!");
+        System.out.println("Vendor Name Cannot Be Empty!");
             return;
         }
+        double depositAmount =0;
         System.out.print("Please Enter Deposit Amount: ");
         try {
-            double depositAmount = Double.parseDouble(myScanner.nextLine().trim());
+             depositAmount = Double.parseDouble(myScanner.nextLine().trim());
 
             if (depositAmount <= 0) {
                 System.out.println("Deposit amount must be positive!");
@@ -98,7 +100,7 @@ public class Ledger {
         String depositTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
         Transaction depositTransaction = new Transaction(depositDate, depositTime, depositDescription, depositVendor, depositAmount);
-        System.out.println("You Are Despositing $" + depositAmount + "to" + depositVendor);
+        System.out.println("You Are Despositing $" + depositAmount + " to "+ depositVendor + ". \n");
         repository.saveTransaction(depositTransaction);
         transactions.add(depositTransaction);
         System.out.println("Deposit added successfully!");
@@ -153,7 +155,7 @@ public class Ledger {
                     break;
                 case "H":
                     inLedger = false;
-                    return;
+                    break;
                 default:
                     System.out.println("Invalid option. Try again.");
 
@@ -349,14 +351,17 @@ public class Ledger {
         String searchVendor = myScanner.nextLine().trim();
 
         boolean matchFound = false;
+//
+//        for (int i = transactions.size() - 1; i >= 0; i--) {
+//            Transaction t = transactions.get(i);
+//            if (t.getVendor().equalsIgnoreCase(searchVendor)) {
+//                System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount());
+//
+//                matchFound = true;
 
-        for (int i = transactions.size() - 1; i >= 0; i--) {
-            Transaction t = transactions.get(i);
-            if (t.getVendor().equalsIgnoreCase(searchVendor)) {
-                System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount());
-
-                matchFound = true;
-
+        for (Transaction transaction : transactions) {
+            if (transactions.get(searchVendor))
+            // use this method to find serach
             }
         }
         if (!matchFound) {
