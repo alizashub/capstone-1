@@ -1,4 +1,5 @@
 package com.pluralsight;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -10,6 +11,7 @@ public class Ledger {
     private TransactionRepository repository;
     private Scanner myScanner;
     private ArrayList<Transaction> transactions;
+    private String userName;
 
     // Constructor
     public Ledger() {
@@ -19,21 +21,24 @@ public class Ledger {
     }
 
     public void home() {
+
+        askUserName();
+
         boolean running = true;
 
         while (running) {
             System.out.println("*************");
-            System.out.println(" HOME MENU ");
+            System.out.println(" HOME MENU - What Shall We Do Today," + userName +"?");
             System.out.println("*************");
-            System.out.println("D) Add Deposit");
+            System.out.println("D) Add Deposit ");
             System.out.println("P) Make A Payment");
-            System.out.println("L) Go To Ledger");
+            System.out.println("L) Go To Ledger - See Your Transaction History");
             System.out.println("X) Exit The Program");
-
             System.out.print("Choose An Option: ");
+
             String choice = "";
             try {
-                choice = myScanner.nextLine().trim().toUpperCase();
+                 choice = myScanner.nextLine().trim().toUpperCase();
                 if (choice.isEmpty()) {
                     System.out.println("Please Choose A Valid Option.");
                     continue;
@@ -42,6 +47,7 @@ public class Ledger {
                 System.out.println("Input Error" + e.getMessage());
                 continue;
             }
+
 
             switch (choice) {
                 case "D":
@@ -63,10 +69,21 @@ public class Ledger {
         System.out.println("Exiting Application. Goodbye!");
     }
 
+    private void askUserName() {
+        System.out.print("Hey There! What's your name?");
+        userName = myScanner.next().trim();
+
+        while (userName.isEmpty()) {
+            System.out.println("Oops, you forgot to type in your name! Let's try that again.");
+            userName = myScanner.nextLine().trim();
+        }
+        System.out.println("Welcome , " + userName + "! Let's Get Your Finances Organized!");
+    }
+
     //Add Deposit
     private void addDeposit() {
         System.out.println("***********************");
-        System.out.println("  DEPOSIT INFORMATION  ");
+        System.out.println( userName + " DEPOSIT INFORMATION  ");
         System.out.println("***********************");
 
         System.out.print("Enter Deposit Description : ");
@@ -101,7 +118,7 @@ public class Ledger {
         String depositTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
         Transaction depositTransaction = new Transaction(depositDate, depositTime, depositDescription, depositVendor, depositAmount);
-        System.out.println("You Are Despositing $" + depositAmount + " to " + depositVendor + ". \n");
+        System.out.println( userName + "You Are Despositing $" + depositAmount + " to " + depositVendor + ". \n");
         repository.saveTransaction(depositTransaction);
         transactions.add(depositTransaction);
         System.out.println("Deposit Transaction Was Added Successfully!");
@@ -201,15 +218,16 @@ public class Ledger {
 
     private void showPayments() {
         System.out.println("""
-                        *************************
-                               PAYMENTS ONLY     
-                        *************************
-                        Date  Time  Description   Vendor   Amount
-                        """);
+                *************************
+                       PAYMENTS ONLY     
+                *************************
+                Date  Time  Description   Vendor   Amount
+                """);
         for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction t = transactions.get(i);
             if (t.getAmount() < 0) { // Payments are negative
-                System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount()); }
+                System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount());
+            }
         }
     }
 
@@ -269,109 +287,109 @@ public class Ledger {
             LocalDate transactionDate = LocalDate.parse(t.getDate());
             if ((transactionDate.isEqual(firstDayofMonth) || transactionDate.isAfter(firstDayofMonth)) && (transactionDate.isEqual(today) || transactionDate.isBefore(today)))
                 System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount());
+            matchFound = true;
+        }
+        if (!matchFound) {
+            System.out.println("No transactions found for this month to date.");
+        }
+    }
+
+    private void showPreviousMonth() {
+        System.out.println("\n=== PREVIOUS MONTH TRANSACTIONS ===");
+        LocalDate today = LocalDate.now();
+        LocalDate firstDayOfCurrentMonth = today.withDayOfMonth(1);
+        LocalDate lastDayOfPreviousMonth = firstDayOfCurrentMonth.minusDays(1);
+        LocalDate firstDayOfPreviousMonth = lastDayOfPreviousMonth.withDayOfMonth(1);
+
+        boolean matchFound = false;
+
+        for (int i = transactions.size() - 1; i >= 0; i--) {
+            Transaction t = transactions.get(i);
+            LocalDate transactionDate = LocalDate.parse(t.getDate());
+
+            boolean onOrAfterStartMonth = transactionDate.isEqual(firstDayOfPreviousMonth) || transactionDate.isAfter(firstDayOfPreviousMonth);
+            boolean onOrBeforeEndMonth = transactionDate.isEqual(lastDayOfPreviousMonth) || transactionDate.isBefore(lastDayOfPreviousMonth);
+
+            if (onOrAfterStartMonth && onOrBeforeEndMonth) {
+                System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount());
+            }
+        }
+
+    }
+
+    private void showYearToDate() {
+        LocalDate today = LocalDate.now();
+        LocalDate firstDayOfYear = today.withDayOfYear(1);
+
+        boolean matchFound = false;
+
+        for (int i = transactions.size() - 1; i >= 0; i--) {
+            Transaction t = transactions.get(i);
+
+            LocalDate transactionDate = LocalDate.parse(t.getDate());
+
+            boolean onOrAfterStartYear = transactionDate.isEqual(firstDayOfYear) || transactionDate.isAfter(firstDayOfYear);
+            boolean onOrBeforeTodayYear = transactionDate.isEqual(today) || transactionDate.isBefore(today);
+
+            if (onOrAfterStartYear & onOrBeforeTodayYear) {
+                System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount());
+
                 matchFound = true;
             }
-            if (!matchFound) {
-                System.out.println("No transactions found for this month to date.");
+        }
+
+        if (!matchFound) {
+            System.out.println("No transactions found for Year to Date.");
+        }
+    }
+
+    private void showPreviousYear() {
+        System.out.println("\n=== PREVIOUS YEAR TRANSACTIONS ===");
+
+        LocalDate today = LocalDate.now();
+
+        LocalDate firstDayOfThePreviousYear = today.minusYears(1).withDayOfYear(1);
+        LocalDate lastDayPreviousYear = today.withDayOfYear(1).minusDays(1);
+
+        boolean matchFound = false;
+
+        for (int i = transactions.size() - 1; i >= 0; i--) {
+            Transaction t = transactions.get(i);
+
+            LocalDate transactionDate = LocalDate.parse(t.getDate());
+
+            boolean onOrAfterStartPreviousYear = transactionDate.isEqual(firstDayOfThePreviousYear) || transactionDate.isAfter(firstDayOfThePreviousYear);
+            boolean onOrBeforeEndPreviousYear = transactionDate.isEqual(lastDayPreviousYear) || transactionDate.isBefore(lastDayPreviousYear);
+
+            if (onOrAfterStartPreviousYear & onOrBeforeEndPreviousYear) {
+                System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount());
+
+                matchFound = true;
             }
         }
 
-        private void showPreviousMonth () {
-            System.out.println("\n=== PREVIOUS MONTH TRANSACTIONS ===");
-            LocalDate today = LocalDate.now();
-            LocalDate firstDayOfCurrentMonth = today.withDayOfMonth(1);
-            LocalDate lastDayOfPreviousMonth = firstDayOfCurrentMonth.minusDays(1);
-            LocalDate firstDayOfPreviousMonth = lastDayOfPreviousMonth.withDayOfMonth(1);
+        if (!matchFound) {
+            System.out.println("No transactions found for previous year.");
+        }
+    }
 
-            boolean matchFound = false;
+    private void searchByVendor() {
+        System.out.println("Enter vendor name to search: ");
+        String searchVendor = myScanner.nextLine().trim();
 
-            for (int i = transactions.size() - 1; i >= 0; i--) {
-                Transaction t = transactions.get(i);
-                LocalDate transactionDate = LocalDate.parse(t.getDate());
+        boolean matchFound = false;
 
-                boolean onOrAfterStartMonth = transactionDate.isEqual(firstDayOfPreviousMonth) || transactionDate.isAfter(firstDayOfPreviousMonth);
-                boolean onOrBeforeEndMonth = transactionDate.isEqual(lastDayOfPreviousMonth) || transactionDate.isBefore(lastDayOfPreviousMonth);
+        for (int i = transactions.size() - 1; i >= 0; i--) {
+            Transaction t = transactions.get(i);
+            if (t.getVendor().equalsIgnoreCase(searchVendor)) {
+                System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount());
 
-                if (onOrAfterStartMonth && onOrBeforeEndMonth) {
-                    System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount());
-                }
+                matchFound = true;
+
+
             }
 
         }
-
-        private void showYearToDate () {
-            LocalDate today = LocalDate.now();
-            LocalDate firstDayOfYear = today.withDayOfYear(1);
-
-            boolean matchFound = false;
-
-            for (int i = transactions.size() - 1; i >= 0; i--) {
-                Transaction t = transactions.get(i);
-
-                LocalDate transactionDate = LocalDate.parse(t.getDate());
-
-                boolean onOrAfterStartYear = transactionDate.isEqual(firstDayOfYear) || transactionDate.isAfter(firstDayOfYear);
-                boolean onOrBeforeTodayYear = transactionDate.isEqual(today) || transactionDate.isBefore(today);
-
-                if (onOrAfterStartYear & onOrBeforeTodayYear) {
-                    System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount());
-
-                    matchFound = true;
-                }
-            }
-
-            if (!matchFound) {
-                System.out.println("No transactions found for Year to Date.");
-            }
-        }
-
-        private void showPreviousYear () {
-            System.out.println("\n=== PREVIOUS YEAR TRANSACTIONS ===");
-
-            LocalDate today = LocalDate.now();
-
-            LocalDate firstDayOfThePreviousYear = today.minusYears(1).withDayOfYear(1);
-            LocalDate lastDayPreviousYear = today.withDayOfYear(1).minusDays(1);
-
-            boolean matchFound = false;
-
-            for (int i = transactions.size() - 1; i >= 0; i--) {
-                Transaction t = transactions.get(i);
-
-                LocalDate transactionDate = LocalDate.parse(t.getDate());
-
-                boolean onOrAfterStartPreviousYear = transactionDate.isEqual(firstDayOfThePreviousYear) || transactionDate.isAfter(firstDayOfThePreviousYear);
-                boolean onOrBeforeEndPreviousYear = transactionDate.isEqual(lastDayPreviousYear) || transactionDate.isBefore(lastDayPreviousYear);
-
-                if (onOrAfterStartPreviousYear & onOrBeforeEndPreviousYear) {
-                    System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount());
-
-                    matchFound = true;
-                }
-            }
-
-            if (!matchFound) {
-                System.out.println("No transactions found for previous year.");
-            }
-        }
-
-        private void searchByVendor () {
-            System.out.println("Enter vendor name to search: ");
-            String searchVendor = myScanner.nextLine().trim();
-
-            boolean matchFound = false;
-
-            for (int i = transactions.size() - 1; i >= 0; i--) {
-                Transaction t = transactions.get(i);
-                if (t.getVendor().equalsIgnoreCase(searchVendor)) {
-                    System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount());
-
-                    matchFound = true;
-
-
-                }
-
-            }
-        }
+    }
 }
 
