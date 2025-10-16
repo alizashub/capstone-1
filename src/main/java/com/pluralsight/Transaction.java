@@ -11,10 +11,10 @@ public class Transaction {
 
 
     public Transaction(String date, String time, String description, String vendor, double amount) {
-        this.date = date;
-        this.time = time;
-        this.description = description;
-        this.vendor = vendor;
+        this.date = date.trim();
+        this.time = time.trim();
+        this.description = description.trim();
+        this.vendor = vendor.trim();
         this.amount = amount;
     }
 
@@ -40,5 +40,11 @@ public class Transaction {
 
     public String toCsvFormat() {
         return date + "|" + time + "|" + description + "|" + vendor + "|" + amount;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s | %s | %s | %s | $%.2f",
+                date, time, description, vendor, amount);
     }
 }

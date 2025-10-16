@@ -1,5 +1,4 @@
 package com.pluralsight;
-
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -7,18 +6,21 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class TransactionRepository {
+    private static final String FILE_PATH = ("src/main/resources/transactions.csv");
 
     public ArrayList<Transaction> readTransactions() {
         ArrayList<Transaction> listOfTransactions = new ArrayList<Transaction>();
         try {
-            FileReader fileReader = new FileReader("src/main/resources/transactions.csv");
+            FileReader fileReader = new FileReader(FILE_PATH);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
             String eachLine;
-            bufferedReader.readLine();
+            bufferedReader.readLine(); //Skips header
             while ((eachLine = bufferedReader.readLine()) != null) {
                 String[] parts = eachLine.split("\\|");
-
+//                if (parts.length != 5) {
+//                    throw new IllegalArgumentException("Invalid CSV format - expected 5 fields, got " + parts.length);
+//                }
                 String date = parts[0];
                 String time = parts[1];
                 String description = parts[2];
