@@ -228,6 +228,9 @@ public class Ledger {
     }
 
     private void showDeposits() {
+        System.out.println("\n");
+        System.out.println("   ALL DEPOSITS   ");
+
         if (transactions.isEmpty()) {
             System.out.println("No Deposit Transactions To Display.");
             return;
@@ -241,12 +244,9 @@ public class Ledger {
     }
 
     private void showPayments() {
-        System.out.println("""
-                *************************
-                       PAYMENTS ONLY     
-                *************************
-                Date  Time  Description   Vendor   Amount
-                """);
+        System.out.println("\n");
+        System.out.println("   ALL PAYMENTS   ");
+
         for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction t = transactions.get(i);
             if (t.getAmount() < 0) { // Payments are negative
@@ -259,15 +259,17 @@ public class Ledger {
         boolean inReports = true;
 
         while (inReports) {
-            System.out.println("\n=== REPORTS MENU ===");
+            System.out.println("                 -----------                          ");
+            System.out.println("                  REPORT MENU                         ");
+            System.out.println("                 -----------                          ");
             System.out.println("1) Month To Date");
             System.out.println("2) Previous Month");
             System.out.println("3) Year To Date");
             System.out.println("4) Previous Year");
-            System.out.println("5) Search by Vendor");
-            System.out.println("6) Back to Ledger");
+            System.out.println("5) Search By Vendor");
+            System.out.println("6) Back To Ledger");
             System.out.println("7) Back Home");
-            System.out.print("Choose an option: ");
+            System.out.print("\n" + userName + "," + " Type The LETTER Of Your Choice From Above To See Your Report : ");
 
             String choice = myScanner.nextLine().trim();
 
@@ -300,7 +302,9 @@ public class Ledger {
     }
 
     private void showMonthToDate() {
-        System.out.println("\n=== MONTH TO DATE REPORT ===");
+        System.out.println("\n");
+        System.out.println("   MONTH TO DATE REPORT  ");
+
         LocalDate today = LocalDate.now();
         LocalDate firstDayofMonth = today.withDayOfMonth(1);
 
