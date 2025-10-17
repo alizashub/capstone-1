@@ -59,7 +59,7 @@ date|time|description|vendor|amount
 ## 📸 Screenshots
 
 ### Home Menu
-![Home Menu](src/main/resources/homeMenu.jpg)
+![Home Menu](src/main/resources/homeMenu.png)
 
 ### Adding a Deposit
 ![Adding Deposit](src/main/resources/addDeposit.jpg)
