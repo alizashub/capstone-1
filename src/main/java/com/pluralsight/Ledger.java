@@ -1,5 +1,6 @@
 package com.pluralsight;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -144,7 +145,7 @@ public class Ledger {
             }
         }
         // gets the current date and formats it using the datetimeformatter eg. 2025/16/10
-        String depositDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/dd/MM")) ;
+        String depositDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) ;
         // gets the current time and formats it using the datetimeformatter where a represents the am/pm eg. 11:42:59 AM
         String depositTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss a"));
 
@@ -169,7 +170,7 @@ public class Ledger {
 
         String paymentDescription = "";
         while (paymentDescription.isEmpty()){
-            System.out.println("\nEnter Payment's Description: ");
+            System.out.print("\nEnter Payment's Description: ");
             paymentDescription = myScanner.nextLine().trim();
 
             if (paymentDescription.isEmpty()){
@@ -209,7 +210,7 @@ public class Ledger {
             }
         }
 
-        String paymentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/dd/MM"));
+        String paymentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) ;
         String paymentTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss a"));
 
         Transaction paymentTransaction = new Transaction(paymentDate, paymentTime, paymentDescription, paymentVendor, paymentAmount);
@@ -267,7 +268,7 @@ public class Ledger {
             return;
         }
         System.out.println("\n");
-        System.out.println("   ALL TRANSACTIONS   ");
+        System.out.println("ALL TRANSACTIONS : ");
 
         for (int i = transactions.size() - 1; i >= 0; i--) {  // newest first
             Transaction t = transactions.get(i);
@@ -276,7 +277,7 @@ public class Ledger {
 
     private void showDeposits() {
         System.out.println("\n");
-        System.out.println("   ALL DEPOSITS   ");
+        System.out.println("ALL DEPOSITS : ");
 
         if (transactions.isEmpty()) {
             System.out.println("No Deposit Transactions To Display.");
@@ -291,7 +292,7 @@ public class Ledger {
 
     private void showPayments() {
         System.out.println("\n");
-        System.out.println("   ALL PAYMENTS   ");
+        System.out.println("ALL PAYMENTS :");
 
         for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction t = transactions.get(i);
@@ -313,7 +314,7 @@ public class Ledger {
             System.out.println("4) Previous Year");
             System.out.println("5) Search By Vendor");
             System.out.println("6) Back To Ledger");
-            System.out.println("7) Back Home");
+            System.out.println("0) Back Home");
             System.out.print("\n" + userName + "," + " Type The LETTER Of Your Choice From Above To See Your Report : ");
 
             String choice = myScanner.nextLine().trim();
@@ -337,7 +338,8 @@ public class Ledger {
                 case "6":
                     inReports = false;
                     return;
-                case "7":
+                case "0":
+                    inReports = false;
                     home();
                     break;
                 default:
@@ -350,19 +352,19 @@ public class Ledger {
     // shows transaction from start of the current month up to today
     private void showMonthToDate() {
         System.out.println("\n");
-        System.out.println("   MONTH TO DATE REPORT  ");
+        System.out.println("MONTH TO DATE REPORT :");
 
         LocalDate today = LocalDate.now();
         LocalDate firstDayofMonth = today.withDayOfMonth(1); // create a new object with the same year and month, but day set to 1
         System.out.println("Transactions From " + firstDayofMonth + " " + " to " + today);
         boolean matchFound = false; // the varible matchFound starts with no matches
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         // looping backwards
         for (int i = transactions.size() - 1; i >= 0; i--) {
             // gets one transaction object from the array list at index i
             Transaction t = transactions.get(i);
             // turns the string into a localdate object called trasactiondate
-            LocalDate transactionDate = LocalDate.parse(t.getDate());
+            LocalDate transactionDate = LocalDate.parse(t.getDate(),formatter);
             //checks if the date is on or after the first day of the month && if the date is on or before today ( to find if the transaction happened this month )
             if (!transactionDate.isBefore(firstDayofMonth) && !transactionDate.isAfter(today)) {
                 System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
@@ -379,7 +381,7 @@ public class Ledger {
     private void showPreviousMonth() {
 
         System.out.println("\n");
-        System.out.println("   PREVIOUS MONTH TRANSACTIONS  ");
+        System.out.println("REVIOUS MONTH TRANSACTIONS : ");
 
 
         // current date eg. 10/16/2025
@@ -397,8 +399,9 @@ public class Ledger {
         // loops backwards through the transactions
         for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction t = transactions.get(i);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             // converts string to localdate object
-            LocalDate transactionDate = LocalDate.parse(t.getDate());
+            LocalDate transactionDate = LocalDate.parse(t.getDate(),formatter);
 
             if (!transactionDate.isBefore(firstDayOfPreviousMonth) && !transactionDate.isAfter(lastDayOfPreviousMonth)) {
                 System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
@@ -415,7 +418,7 @@ public class Ledger {
     // show transaction from Jan 1st of the current year to the current date of the current year
     private void showYearToDate() {
         System.out.println("\n");
-        System.out.println("   YEAR TO DATE TRANSACTIONS   ");
+        System.out.println("YEAR TO DATE TRANSACTIONS : ");
 
         // todays date eg. 10/16/2025
         LocalDate today = LocalDate.now();
@@ -428,8 +431,9 @@ public class Ledger {
         // looping backwards through the transactions
         for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction t = transactions.get(i);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             // converts date string to localdate object
-            LocalDate transactionDate = LocalDate.parse(t.getDate());
+            LocalDate transactionDate = LocalDate.parse(t.getDate(),formatter);
             // checks to see if the date is jan 1st or after and if the date if today or earlier ( eg. range created with Minimum : Jan 1st & Maximum : 16th October )
             if ((!transactionDate.isBefore(firstDayOfYear)) && !transactionDate.isAfter(today)) {
                 System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
@@ -444,7 +448,7 @@ public class Ledger {
     // show transactions from the previous year
     private void showPreviousYear() {
         System.out.println("\n");
-        System.out.println("   PREVIOUS YEAR TRANSACTIONS   ");
+        System.out.println("REVIOUS YEAR TRANSACTIONS : ");
 
         //  todays date eg. 10/16/2025
         LocalDate today = LocalDate.now();
@@ -459,7 +463,8 @@ public class Ledger {
         for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction t = transactions.get(i);
             // convert string to localdate object
-            LocalDate transactionDate = LocalDate.parse(t.getDate());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate transactionDate = LocalDate.parse(t.getDate(),formatter);
             // checks if the date is within the previous year, not before and not after the last day of the previous year. eg. between 1st Jan 2024 to 31st Dec 2024.
             if (!transactionDate.isBefore(firstDayOfThePreviousYear) && !transactionDate.isAfter(lastDayPreviousYear)) {
                 System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
@@ -476,8 +481,8 @@ public class Ledger {
     // show transaction from specifc vendors
     private void searchByVendor() {
         System.out.println("\n");
-        System.out.println("   VENDOR TRANSACTIONS   ");
-        System.out.println("Enter Vendor Name To Search: ");
+        System.out.println("VENDOR TRANSACTIONS :");
+        System.out.print("Enter Vendor Name To Search: ");
         String searchVendor = myScanner.nextLine().trim();
         System.out.println("Transactions From " + searchVendor);
 

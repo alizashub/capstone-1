@@ -59,20 +59,21 @@ date|time|description|vendor|amount
 ## 📸 Screenshots
 
 ### Home Menu
-![Home Menu](screenshots/home-menu.png)
-*Main navigation with deposit, payment, and ledger options*
+![Home Menu](src/main/resources/Images/homeMenu.jpg)
 
 ### Adding a Deposit
-![Add Deposit](screenshots/add-deposit.png)
-*User input form with validation*
+![Adding Deposit](src/main/resources/Images/addDeposit.jpg)
 
-### Ledger View
-![Ledger View](screenshots/ledger-view.png)
-*Transaction history displayed newest first*
-
-### Reports Menu
-![Reports Menu](screenshots/reports-menu.png)
-*Report filtering options*
+## Ledger View  
+![Ledger Menu](src/main/resources/Images/ledgerMenu.jpg)
+### Ledger Options 
+![showAllTransactions](src/main/resources/Images/showAllTransactions.jpg)
+![viewPaymentsOnly](src/main/resources/Images/showPaymentsOnly.jpg)
+### Reports Menu Options 
+![showYearToDateReport](src/main/resources/Images/showYearToDateReport.jpg)
+![showPreviousMonth](src/main/resources/Images/showPreviousMonthReport.jpg)
+![showPreviousYearReport](src/main/resources/Images/showPreviousYearReport.jpg)
+![showMonthToDateReport](src/main/resources/Images/showMonthToDateReport.jpg)
 
 ---
 
