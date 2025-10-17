@@ -147,7 +147,7 @@ public class Ledger {
         // gets the current date and formats it using the datetimeformatter eg. 2025/16/10
         String depositDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) ;
         // gets the current time and formats it using the datetimeformatter where a represents the am/pm eg. 11:42:59 AM
-        String depositTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss a"));
+        String depositTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
         // creates a transaction object using the constructor
         Transaction depositTransaction = new Transaction(depositDate, depositTime, depositDescription, depositVendor, depositAmount);
@@ -211,7 +211,7 @@ public class Ledger {
         }
 
         String paymentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) ;
-        String paymentTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss a"));
+        String paymentTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
         Transaction paymentTransaction = new Transaction(paymentDate, paymentTime, paymentDescription, paymentVendor, paymentAmount);
         System.out.println("You Are Paying $" + paymentAmount + " to " + paymentVendor + ". \n");
