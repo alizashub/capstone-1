@@ -1,12 +1,12 @@
 # Accounting Ledger CLI Application 
 
-This is a Java command-line application for tracking financial transactions.
+This is my Java command-line application for tracking financial transactions.
 
 ---
 
 ## 📋 Project Description
 
-This application allows users to track deposits and payments. 
+This application allows users to track deposits and payments and navigate between menus.
 All transactions are stored in a CSV file and can be viewed with various filters and pre-defined reports.
 
 ---
@@ -14,10 +14,10 @@ All transactions are stored in a CSV file and can be viewed with various filters
 ## ✨ Features
 
 ### Home Screen
-- **D) Add Deposit** - Record incoming transactions
-- **P) Make Payment** - Record outgoing payments
-- **L) Ledger** - View transaction history
-- **X) Exit** - Close the application
+- **D) Add Deposit** - Record incoming transactions where date and time is automatically added 
+- **P) Make Payment** - Record outgoing payments where date and time is automatically added
+- **L) Ledger** - View transaction history, filtered by options like view all deposits, view all payments.
+- **X) Exit** - Close the application, lets the user exit out of the program. 
 
 ### Ledger Screen
 - **A) All** - Display all transactions (newest first)
@@ -77,11 +77,11 @@ date|time|description|vendor|amount
 
 ---
 
-## 📝 Intresting Part Of My Code
+## 📝 Interesting Part Of My Code
 ![takeUserName](src/main/resources/Images/userName.jpg)
-## Ask User Name Method
+## Ask UserName Method
 ```java
-// takes user name and saves it into userName variable
+// takes userName and saves it into userName variable
 private void askUserName() {
     System.out.print("Hey There! What's Your Name?");
     // take user input and save it to the userName variable and converts to uppercase
