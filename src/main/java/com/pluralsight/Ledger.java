@@ -163,39 +163,55 @@ public class Ledger {
         System.out.println("Let's Go Back Home! What Else Would You Like To Do Today?");
     }
 
-    // MakePayment
+    // guides user to add a payment and create a new transaction object, then saves it to repository
     private void makePayment() {
         System.out.println("\n");
         System.out.println("         " + userName.toUpperCase() + "'S " + " PAYMENT INFORMATION       ");
 
-        System.out.print("\nEnter Payment's Description: ");
-        String paymentDescription = myScanner.nextLine();
+        String paymentDescription = "";
+        while (paymentDescription.isEmpty()){
+            System.out.println("\nEnter Payment's Description: ");
+            paymentDescription = myScanner.nextLine().trim();
 
-        System.out.print("Enter Payment's Vendor: ");
-        String paymentVendor = myScanner.nextLine();
+            if (paymentDescription.isEmpty()){
+                System.out.println("\n" + userName + "," + " We Need A Description To Add This Payment. Let's Try That Again.");
+            }
+        }
 
-        double paymentAmount = 0;
-        boolean validPaymentInput = false;
+        String paymentVendor ="";
 
-        while (!validPaymentInput) {
+        while ((paymentVendor.isEmpty())){
+            System.out.print("Enter Payment's Vendor: ");
+            paymentVendor = myScanner.nextLine();
+
+            if (paymentVendor.isEmpty()){
+                System.out.println("Don't Leave Me Hanging! Please Enter A Vendor Name: ");
+
+            }
+        }
+
+        double paymentAmount;
+
+        while (true) {
             System.out.print("Enter Payment's Amount: ");
             String paymentInput = myScanner.nextLine().trim();
+
             try {
                 paymentAmount = Double.parseDouble(paymentInput);
-
-                if (paymentAmount <= 0) {
-                    System.out.println("Payment must be positive. Give it another shot.");
-                } else {
+                if (paymentAmount > 0) {
                     paymentAmount = -Math.abs(paymentAmount);
-                    validPaymentInput = true;
+                    break; // exit loop
+                } else {
+                    System.out.println("Payment must be positive. Give it another shot.");
                 }
+
             } catch (NumberFormatException e) {
                 System.out.println("That Does Not Look like A Valid Number. Let's Try Again.");
             }
         }
 
-        String paymentDate = LocalDate.now().toString();
-        String paymentTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+        String paymentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/dd/MM"));
+        String paymentTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss a"));
 
         Transaction paymentTransaction = new Transaction(paymentDate, paymentTime, paymentDescription, paymentVendor, paymentAmount);
         System.out.println("You Are Paying $" + paymentAmount + " to " + paymentVendor + ". \n");
