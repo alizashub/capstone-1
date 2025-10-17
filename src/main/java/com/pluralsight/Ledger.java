@@ -145,7 +145,7 @@ public class Ledger {
             }
         }
         // gets the current date and formats it using the datetimeformatter eg. 2025/16/10
-        String depositDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) ;
+        String depositDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         // gets the current time and formats it using the datetimeformatter where a represents the am/pm eg. 11:42:59 AM
         String depositTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
@@ -169,22 +169,22 @@ public class Ledger {
         System.out.println("         " + userName.toUpperCase() + "'S " + " PAYMENT INFORMATION       ");
 
         String paymentDescription = "";
-        while (paymentDescription.isEmpty()){
+        while (paymentDescription.isEmpty()) {
             System.out.print("\nEnter Payment's Description: ");
             paymentDescription = myScanner.nextLine().trim();
 
-            if (paymentDescription.isEmpty()){
+            if (paymentDescription.isEmpty()) {
                 System.out.println("\n" + userName + "," + " We Need A Description To Add This Payment. Let's Try That Again.");
             }
         }
 
-        String paymentVendor ="";
+        String paymentVendor = "";
 
-        while ((paymentVendor.isEmpty())){
+        while ((paymentVendor.isEmpty())) {
             System.out.print("Enter Payment's Vendor: ");
             paymentVendor = myScanner.nextLine();
 
-            if (paymentVendor.isEmpty()){
+            if (paymentVendor.isEmpty()) {
                 System.out.println("Don't Leave Me Hanging! Please Enter A Vendor Name: ");
 
             }
@@ -210,7 +210,7 @@ public class Ledger {
             }
         }
 
-        String paymentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) ;
+        String paymentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         String paymentTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
         Transaction paymentTransaction = new Transaction(paymentDate, paymentTime, paymentDescription, paymentVendor, paymentAmount);
@@ -263,6 +263,9 @@ public class Ledger {
     }
 
     private void showAll() {
+        System.out.println("\n");
+        System.out.println("ALL TRANSACTIONS : ");
+
         if (transactions.isEmpty()) {
             System.out.println("No transactions to display.");
             return;
@@ -272,7 +275,8 @@ public class Ledger {
 
         for (int i = transactions.size() - 1; i >= 0; i--) {  // newest first
             Transaction t = transactions.get(i);
-            System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount()); }
+            System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
+        }
     }
 
     private void showDeposits() {
@@ -283,23 +287,36 @@ public class Ledger {
             System.out.println("No Deposit Transactions To Display.");
             return;
         }
+        boolean matchFound = false;
         for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction t = transactions.get(i);
             if (t.getAmount() > 0) {
-                System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount()); }
+                System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
+                matchFound = true;
             }
         }
+        if (!matchFound){
+            System.out.println("No Deposit Transactions To Display");
+        }
+    }
 
     private void showPayments() {
         System.out.println("\n");
         System.out.println("ALL PAYMENTS :");
 
+        boolean matchFound = false;
         for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction t = transactions.get(i);
             if (t.getAmount() < 0) { // Payments are negative
-                System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount()); }
+                System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
+                matchFound = true;
             }
         }
+        if (!matchFound) {
+            System.out.println("No Payment Transactions To Display");
+        }
+    }
+
 
     private void showReports() {
         boolean inReports = true;
@@ -364,7 +381,7 @@ public class Ledger {
             // gets one transaction object from the array list at index i
             Transaction t = transactions.get(i);
             // turns the string into a localdate object called trasactiondate
-            LocalDate transactionDate = LocalDate.parse(t.getDate(),formatter);
+            LocalDate transactionDate = LocalDate.parse(t.getDate(), formatter);
             //checks if the date is on or after the first day of the month && if the date is on or before today ( to find if the transaction happened this month )
             if (!transactionDate.isBefore(firstDayofMonth) && !transactionDate.isAfter(today)) {
                 System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
@@ -401,7 +418,7 @@ public class Ledger {
             Transaction t = transactions.get(i);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             // converts string to localdate object
-            LocalDate transactionDate = LocalDate.parse(t.getDate(),formatter);
+            LocalDate transactionDate = LocalDate.parse(t.getDate(), formatter);
 
             if (!transactionDate.isBefore(firstDayOfPreviousMonth) && !transactionDate.isAfter(lastDayOfPreviousMonth)) {
                 System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
@@ -433,7 +450,7 @@ public class Ledger {
             Transaction t = transactions.get(i);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             // converts date string to localdate object
-            LocalDate transactionDate = LocalDate.parse(t.getDate(),formatter);
+            LocalDate transactionDate = LocalDate.parse(t.getDate(), formatter);
             // checks to see if the date is jan 1st or after and if the date if today or earlier ( eg. range created with Minimum : Jan 1st & Maximum : 16th October )
             if ((!transactionDate.isBefore(firstDayOfYear)) && !transactionDate.isAfter(today)) {
                 System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
@@ -464,7 +481,7 @@ public class Ledger {
             Transaction t = transactions.get(i);
             // convert string to localdate object
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate transactionDate = LocalDate.parse(t.getDate(),formatter);
+            LocalDate transactionDate = LocalDate.parse(t.getDate(), formatter);
             // checks if the date is within the previous year, not before and not after the last day of the previous year. eg. between 1st Jan 2024 to 31st Dec 2024.
             if (!transactionDate.isBefore(firstDayOfThePreviousYear) && !transactionDate.isAfter(lastDayPreviousYear)) {
                 System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
