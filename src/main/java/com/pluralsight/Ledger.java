@@ -128,7 +128,6 @@ public class Ledger {
 
         while (true) {
             System.out.print("Enter Deposit's Amount: ");
-            // takes in input as a string and stores it in amountInput
             String amountInput = myScanner.nextLine().trim();
 
             try {
@@ -145,16 +144,23 @@ public class Ledger {
                 System.out.println("That Doesn't Look Like A Valid Number. Let's Try Again. ");
             }
         }
+        // gets the current date and formats it using the datetimeformatter eg. 2025/16/10
+        String depositDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/dd/MM")) ;
+        // gets the current time and formats it using the datetimeformatter where a represents the am/pm eg. 11:42:59 AM
+        String depositTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss a"));
 
-        String depositDate = LocalDate.now().toString();
-        String depositTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-
+        // creates a transaction object using the constructor
         Transaction depositTransaction = new Transaction(depositDate, depositTime, depositDescription, depositVendor, depositAmount);
-        System.out.println(userName + " You Are Despositing $ " + depositAmount + " to " + depositVendor + ". \n");
+        System.out.println(userName + " You Are Depositing $ " + depositAmount + " to " + depositVendor + ". \n");
+
+        // writes the transaction object called 'depositTransaction' to transactions.csv file
         repository.saveTransaction(depositTransaction);
+
+        // adds the object at the end of the arraylist - if we did not add to arraylist we will have to reload from csv eg. transactionsv = repository.readTransactions();
         transactions.add(depositTransaction);
+
         System.out.println("Deposit Transaction Was Added Successfully!");
-        System.out.println("\nLet's Go Back Home! What Else Would You Like To Do Today?");
+        System.out.println("Let's Go Back Home! What Else Would You Like To Do Today?");
     }
 
     // MakePayment
