@@ -67,12 +67,13 @@ date|time|description|vendor|amount
 ## Ledger View  
 ![Ledger Menu](src/main/resources/ledgerMenu.jpg)
 
-### Reports Menu Options 
+## Reports Menu 
+![showMonthToDateReport](src/main/resources/showMonthToDateReport.jpg)
 ![showYearToDateReport](src/main/resources/showYearToDateReport.jpg)
+
+### Reports Menu Options
 ![showPreviousMonth](src/main/resources/showPreviousMonthReport.jpg)
 ![showPreviousYearReport](src/main/resources/showPreviousYearReport.jpg)
-![showMonthToDateReport](src/main/resources/showMonthToDateReport.jpg)
-
 
 
 ## 📝 Interesting Part Of My Code
