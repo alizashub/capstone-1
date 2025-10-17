@@ -78,7 +78,7 @@ date|time|description|vendor|amount
 ---
 
 ## 📝 Interesting Part Of My Code
-![takeUserName](src/main/resources/userName.jpg)
+![takeUserName](userName.jpg)
 ## Ask UserName Method
 ```java
 // takes userName and saves it into userName variable
