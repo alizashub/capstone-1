@@ -222,6 +222,7 @@ public class Ledger {
 
     }
 
+    // show ledger menu options, take input
     public void showLedger() {
         boolean inLedger = true;
 
@@ -271,8 +272,7 @@ public class Ledger {
 
         for (int i = transactions.size() - 1; i >= 0; i--) {  // newest first
             Transaction t = transactions.get(i);
-            System.out.println(t.getDate() + " | " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + " | " + t.getAmount());
-        }
+            System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount()); }
     }
 
     private void showDeposits() {
@@ -286,10 +286,9 @@ public class Ledger {
         for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction t = transactions.get(i);
             if (t.getAmount() > 0) {
-                System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount());
+                System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount()); }
             }
         }
-    }
 
     private void showPayments() {
         System.out.println("\n");
@@ -298,10 +297,9 @@ public class Ledger {
         for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction t = transactions.get(i);
             if (t.getAmount() < 0) { // Payments are negative
-                System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount());
+                System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount()); }
             }
         }
-    }
 
     private void showReports() {
         boolean inReports = true;
@@ -368,7 +366,7 @@ public class Ledger {
             LocalDate transactionDate = LocalDate.parse(t.getDate());
             //checks if the date is on or after the first day of the month && if the date is on or before today ( to find if the transaction happened this month )
             if (!transactionDate.isBefore(firstDayofMonth) && !transactionDate.isAfter(today)) {
-                System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount());
+                System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
                 matchFound = true;
             }
         } // loop finished
@@ -404,7 +402,7 @@ public class Ledger {
             LocalDate transactionDate = LocalDate.parse(t.getDate());
 
             if (!transactionDate.isBefore(firstDayOfPreviousMonth) && !transactionDate.isAfter(lastDayOfPreviousMonth)) {
-                System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount());
+                System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
                 matchFound = true;
 
             }
@@ -435,7 +433,7 @@ public class Ledger {
             LocalDate transactionDate = LocalDate.parse(t.getDate());
             // checks to see if the date is jan 1st or after and if the date if today or earlier ( eg. range created with Minimum : Jan 1st & Maximum : 16th October )
             if ((!transactionDate.isBefore(firstDayOfYear)) && !transactionDate.isAfter(today)) {
-                System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount());
+                System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
                 matchFound = true;
             }
         }
@@ -465,7 +463,7 @@ public class Ledger {
             LocalDate transactionDate = LocalDate.parse(t.getDate());
             // checks if the date is within the previous year, not before and not after the last day of the previous year. eg. between 1st Jan 2024 to 31st Dec 2024.
             if (!transactionDate.isBefore(firstDayOfThePreviousYear) && !transactionDate.isAfter(lastDayPreviousYear)) {
-                System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount());
+                System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
                 matchFound = true;
             }
 
@@ -490,7 +488,7 @@ public class Ledger {
             Transaction t = transactions.get(i);
 
             if (t.getVendor().equalsIgnoreCase(searchVendor)) {
-                System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount());
+                System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
                 matchFound = true;
             }
         }
