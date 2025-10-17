@@ -66,9 +66,7 @@ date|time|description|vendor|amount
 
 ## Ledger View  
 ![Ledger Menu](src/main/resources/ledgerMenu.jpg)
-### Ledger Options 
-![showAllTransactions](src/main/resources/showAllTransactions.jpg)
-![viewPaymentsOnly](src/main/resources/showPaymentsOnly.jpg)
+
 ### Reports Menu Options 
 ![showYearToDateReport](src/main/resources/showYearToDateReport.jpg)
 ![showPreviousMonth](src/main/resources/showPreviousMonthReport.jpg)
