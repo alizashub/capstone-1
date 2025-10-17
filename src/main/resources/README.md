@@ -59,21 +59,21 @@ date|time|description|vendor|amount
 ## 📸 Screenshots
 
 ### Home Menu
-![Home Menu](Images/homeMenu.jpg)
+![Home Menu](src/main/resources/homeMenu.jpg)
 
 ### Adding a Deposit
-![Adding Deposit](Images/addDeposit.jpg)
+![Adding Deposit](src/main/resources/addDeposit.jpg)
 
 ## Ledger View  
-![Ledger Menu](Images/ledgerMenu.jpg)
+![Ledger Menu](src/main/resources/ledgerMenu.jpg)
 ### Ledger Options 
-![showAllTransactions](Images/showAllTransactions.jpg)
-![viewPaymentsOnly](Images/showPaymentsOnly.jpg)
+![showAllTransactions](src/main/resources/showAllTransactions.jpg)
+![viewPaymentsOnly](src/main/resources/showPaymentsOnly.jpg)
 ### Reports Menu Options 
-![showYearToDateReport](Images/showYearToDateReport.jpg)
-![showPreviousMonth](Images/showPreviousMonthReport.jpg)
-![showPreviousYearReport](Images/showPreviousYearReport.jpg)
-![showMonthToDateReport](Images/showMonthToDateReport.jpg)
+![showYearToDateReport](src/main/resources/showYearToDateReport.jpg)
+![showPreviousMonth](src/main/resources/showPreviousMonthReport.jpg)
+![showPreviousYearReport](src/main/resources/showPreviousYearReport.jpg)
+![showMonthToDateReport](src/main/resources/showMonthToDateReport.jpg)
 
 ---
 
