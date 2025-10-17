@@ -39,11 +39,11 @@ All transactions are stored in a CSV file and can be viewed with various filters
 1. Open the project in IntelliJ IDEA
 2. Run the `Main.java` file
 3. Follow the on-screen prompts to navigate menus
-4. Transactions are automatically saved to `transactions.csv`
+4. All Transactions are automatically saved to `transactions.csv`
 
 ---
 
-## 💾 Data Format
+## 💾 CSV Format
 
 Transactions are stored in CSV format with pipe delimiters:
 ```
@@ -77,10 +77,23 @@ date|time|description|vendor|amount
 
 ---
 
-## 📝 Notes
+## 📝 Intresting Part Of My Code
+![takeUserName](src/main/resources/Images/userName.jpg)
+## Ask User Name Method
+```java
+// takes user name and saves it into userName variable
+private void askUserName() {
+    System.out.print("Hey There! What's Your Name?");
+    // take user input and save it to the userName variable and converts to uppercase
+    userName = myScanner.nextLine().trim();
 
-- Application validates all user inputs
-- Payments are automatically converted to negative values
-- Date format: yyyy/dd/MM
-- Time format: HH:mm:ss a
-- Empty transactions are skipped during file reading
+    while (userName.isEmpty()) {
+        // if left empty prompts the user to add input
+        System.out.println("Oops, You Forgot To Type In Your Name! Let's Try That Again.");
+        userName = myScanner.nextLine().trim();
+    }
+
+    System.out.println("Welcome , " + userName + "! Let's Get Your Finances Organized!");
+}
+```
+This allows the user to have a more personalized experience when adding payments,deposits or just viewing reports. 
