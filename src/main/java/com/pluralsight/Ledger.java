@@ -16,11 +16,10 @@ public class Ledger {
     // variable to store name of user for personalized messages
     private String userName;
 
-    // constructor to initialize objects like repository, scanner and
+    // constructor
     public Ledger() {
         repository = new TransactionRepository();
         myScanner = new Scanner(System.in);
-        // called the read
         transactions = repository.readTransactions();
     }
 
@@ -231,9 +230,9 @@ public class Ledger {
             System.out.println("                  LEDGER MENU                         ");
             System.out.println("                  -----------                          ");
             System.out.println("A) View All Transactions");
-            System.out.println("B) View Deposits Only");
-            System.out.println("C) View Payments Only");
-            System.out.println("D) View My Reports");
+            System.out.println("D) View Deposits Only");
+            System.out.println("P) View Payments Only");
+            System.out.println("R) View My Reports");
             System.out.println("X) Home Menu");
             System.out.print("\n" + userName + "," + " Type The LETTER Of Your Choice From Above To View Your Transaction History : ");
 
@@ -243,13 +242,13 @@ public class Ledger {
                 case "A":
                     showAll();
                     break;
-                case "B":
+                case "D":
                     showDeposits();
                     break;
-                case "C":
+                case "P":
                     showPayments();
                     break;
-                case "D":
+                case "R":
                     showReports();
                     break;
                 case "X":
