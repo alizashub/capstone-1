@@ -1,4 +1,5 @@
 package com.pluralsight;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -44,11 +45,11 @@ public class Ledger {
 
             // decalring a choice string to take input from user
             // trims extra space from start and end, converts to uppercase
-             String choice = myScanner.nextLine().trim().toUpperCase();
+            String choice = myScanner.nextLine().trim().toUpperCase();
             // if the user does not input their name, the loop is keep running until they do
-             if (choice.isEmpty()) {
-                 System.out.println("\nPlease Choose A Valid Option.");
-                 // take the user back to home menu to choose an option
+            if (choice.isEmpty()) {
+                System.out.println("\nPlease Choose A Valid Option.");
+                // take the user back to home menu to choose an option
                 continue;
             }
 
@@ -88,40 +89,59 @@ public class Ledger {
         System.out.println("Welcome , " + userName + "! Let's Get Your Finances Organized!");
     }
 
-    //Add Deposit
+    // guides user to add deposit and create a new transaction object and saves to repository
     private void addDeposit() {
         System.out.println("\n");
+        // prints the title with username in uppercase
         System.out.println("         " + userName.toUpperCase() + "'S " + " DEPOSIT INFORMATION       ");
 
-        System.out.print("\nEnter Deposit's Description : ");
-        String depositDescription = (myScanner.nextLine().trim());
+        // initilize depositDescription with empty string
+        String depositDescription = "";
 
-        if (depositDescription.isEmpty()) {
-            System.out.println(userName + "We Need A Description To Add This Deposit. Let's Try That Again.");
-            return;
+        // while loops keeps repeating until depositDescription is empty
+        while (depositDescription.isEmpty()) {
+            System.out.print("\nEnter Deposit's Description : ");
+            // takes user input for deposit description and remove extra spaces from start and end
+            depositDescription = (myScanner.nextLine().trim());
+            // is checked each time the loop runs
+            if (depositDescription.isEmpty()) {
+                System.out.println("\n" + userName + "," + " We Need A Description To Add This Deposit. Let's Try That Again.");
+            }
         }
 
-        System.out.print("Enter Deposit's Vendor Name: ");
-        String depositVendor = (myScanner.nextLine().trim());
-        if (depositVendor.isEmpty()) {
-            System.out.println("Don't Leave Me Hanging! Please Enter A Vendor Name. ");
-            return;
+        // initilize depositVendor with empty string
+        String depositVendor = "";
+
+        // depositVendor is empty so user enters the loop until they enter valid input
+        while (depositVendor.isEmpty()) {
+            System.out.print("Enter Deposit's Vendor Name: ");
+            depositVendor = (myScanner.nextLine().trim());
+
+            //prints only if the the user input is still empty
+            if (depositVendor.isEmpty()) {
+                System.out.println("Don't Leave Me Hanging! Please Enter A Vendor Name : ");
+            }
         }
 
-        double depositAmount = 0;
-        boolean validAmount = false;
+        // initilize depositAmount with default zero
+        double depositAmount;
 
-        while (!validAmount) {
+        while (true) {
             System.out.print("Enter Deposit's Amount: ");
+            // takes in input as a string and stores it in amountInput
             String amountInput = myScanner.nextLine().trim();
+
             try {
+                // converts the string of amountInput into a double and saves it into depositAmount
                 depositAmount = Double.parseDouble(amountInput);
-                if (depositAmount <= 0) {
-                    System.out.println("Deposits must be positive. Give it another shot!");
+
+                if (depositAmount > 0) {
+                    // exits loop
+                    break;
                 } else {
-                    validAmount = true;
+                    System.out.println("Deposits must be positive. Give it another shot!");
                 }
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException e) { // throws an exception when user enters input that is not numbers
                 System.out.println("That Doesn't Look Like A Valid Number. Let's Try Again. ");
             }
         }
@@ -315,7 +335,7 @@ public class Ledger {
 
         LocalDate today = LocalDate.now();
         LocalDate firstDayofMonth = today.withDayOfMonth(1); // create a new object with the same year and month, but day set to 1
-        System.out.println("Transactions From " + firstDayofMonth + " " + " to " +today);
+        System.out.println("Transactions From " + firstDayofMonth + " " + " to " + today);
         boolean matchFound = false; // the varible matchFound starts with no matches
 
         // looping backwards
@@ -400,61 +420,63 @@ public class Ledger {
         if (!matchFound) {
             System.out.println("No transactions Found For" + firstDayOfYear.getMonth() + " " + firstDayOfYear.getYear() + " to " + today.getMonth() + " " + today.getYear());
         }
-        }
+    }
 
     // show transactions from the previous year
-    private void showPreviousYear () {
+    private void showPreviousYear() {
         System.out.println("\n");
         System.out.println("   PREVIOUS YEAR TRANSACTIONS   ");
 
-            //  todays date eg. 10/16/2025
-            LocalDate today = LocalDate.now();
-            // changes the year  eg. 10/16/2024 and then changes the day of that year to the 1st day eg. 1/1/2024
-            LocalDate firstDayOfThePreviousYear = today.minusYears(1).withDayOfYear(1);
-            // changes current date to day 1, month 1 eg. 1/1/2025 and then subtracts one day eg. 12/31/2024
-            LocalDate lastDayPreviousYear = today.withDayOfYear(1).minusDays(1);
-            System.out.println("Transactions From " + firstDayOfThePreviousYear.getYear());
+        //  todays date eg. 10/16/2025
+        LocalDate today = LocalDate.now();
+        // changes the year  eg. 10/16/2024 and then changes the day of that year to the 1st day eg. 1/1/2024
+        LocalDate firstDayOfThePreviousYear = today.minusYears(1).withDayOfYear(1);
+        // changes current date to day 1, month 1 eg. 1/1/2025 and then subtracts one day eg. 12/31/2024
+        LocalDate lastDayPreviousYear = today.withDayOfYear(1).minusDays(1);
+        System.out.println("Transactions From " + firstDayOfThePreviousYear.getYear());
 
-            boolean matchFound = false;
-            // looping backwards
-            for (int i = transactions.size() - 1; i >= 0; i--) {
-                Transaction t = transactions.get(i);
-                // convert string to localdate object
-                LocalDate transactionDate = LocalDate.parse(t.getDate());
-                // checks if the date is within the previous year, not before and not after the last day of the previous year. eg. between 1st Jan 2024 to 31st Dec 2024.
-                if (!transactionDate.isBefore(firstDayOfThePreviousYear) && !transactionDate.isAfter(lastDayPreviousYear)) {
-                    System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount());
-                    matchFound = true; }
-
-                }
-            if (!matchFound){
-                System.out.println("No transactions Found For " + firstDayOfThePreviousYear.getYear());
+        boolean matchFound = false;
+        // looping backwards
+        for (int i = transactions.size() - 1; i >= 0; i--) {
+            Transaction t = transactions.get(i);
+            // convert string to localdate object
+            LocalDate transactionDate = LocalDate.parse(t.getDate());
+            // checks if the date is within the previous year, not before and not after the last day of the previous year. eg. between 1st Jan 2024 to 31st Dec 2024.
+            if (!transactionDate.isBefore(firstDayOfThePreviousYear) && !transactionDate.isAfter(lastDayPreviousYear)) {
+                System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount());
+                matchFound = true;
             }
+
+        }
+        if (!matchFound) {
+            System.out.println("No transactions Found For " + firstDayOfThePreviousYear.getYear());
+        }
 
     }
 
     // show transaction from specifc vendors
-        private void searchByVendor () {
-            System.out.println("\n");
-            System.out.println("   VENDOR TRANSACTIONS   ");
-            System.out.println("Enter Vendor Name To Search: ");
-            String searchVendor = myScanner.nextLine().trim();
-            System.out.println("Transactions From "+ searchVendor );
+    private void searchByVendor() {
+        System.out.println("\n");
+        System.out.println("   VENDOR TRANSACTIONS   ");
+        System.out.println("Enter Vendor Name To Search: ");
+        String searchVendor = myScanner.nextLine().trim();
+        System.out.println("Transactions From " + searchVendor);
 
-            boolean matchFound = false;
-            // looping backwards
-            for (int i = transactions.size() - 1; i >= 0; i--) {
-                Transaction t = transactions.get(i);
+        boolean matchFound = false;
+        // looping backwards
+        for (int i = transactions.size() - 1; i >= 0; i--) {
+            Transaction t = transactions.get(i);
 
-                if (t.getVendor().equalsIgnoreCase(searchVendor)) {
-                    System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount());
-                    matchFound = true; }
-                }
-
-            if (!matchFound) {
-                System.out.println("No transactions Found For " + searchVendor);
-
+            if (t.getVendor().equalsIgnoreCase(searchVendor)) {
+                System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount());
+                matchFound = true;
             }
         }
+
+        if (!matchFound) {
+            System.out.println("No transactions Found For " + searchVendor);
+
+        }
     }
+}
 
