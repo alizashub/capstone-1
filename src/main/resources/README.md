@@ -54,7 +54,7 @@ date|time|description|vendor|amount
 
 **Note:** Deposits are positive values, payments are negative values.
 
----
+
 
 ## 📸 Screenshots
 
@@ -75,7 +75,7 @@ date|time|description|vendor|amount
 ![showPreviousYearReport](src/main/resources/showPreviousYearReport.jpg)
 ![showMonthToDateReport](src/main/resources/showMonthToDateReport.jpg)
 
----
+
 
 ## 📝 Interesting Part Of My Code
 ![takeUserName](src/main/resources/userName.jpg)
