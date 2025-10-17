@@ -1,6 +1,4 @@
 package com.pluralsight;
-
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -8,49 +6,51 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Ledger {
-
+    // repository object to handle reading & writing transactions into the csv file
     private TransactionRepository repository;
+    // scanner object to take user input
     private Scanner myScanner;
+    //
     private ArrayList<Transaction> transactions;
+    // variable to store name of user for personalized messages
     private String userName;
 
-    // Constructor
+    // constructor to initialize objects like repository, scanner and
     public Ledger() {
         repository = new TransactionRepository();
         myScanner = new Scanner(System.in);
+        // called the read
         transactions = repository.readTransactions();
     }
 
+    // takes user input, shows home menu, asks user for home menu option, keeps user in loop is no name or option is choosen
     public void home() {
-
+        // prompts the user for their name
         askUserName();
-
+        // true keeps the loop running until the user presses X to exit
         boolean running = true;
-
+        // displays the menu with options
         while (running) {
             System.out.println("                 -----------                          ");
             System.out.println("                  HOME MENU                           ");
             System.out.println("                 -----------                          ");
-            System.out.println("What Shall We Do Today? ");
+            System.out.println("What Would You Like To Do Today? ");
             System.out.println("D) Add A Deposit ");
             System.out.println("P) Make A Payment ");
             System.out.println("L) Go To The Ledger ");
             System.out.println("X) Exit The Program ");
+            // prints user name with text to choose a valid option form the home menu
             System.out.print("\n" + userName + "," + " Type The LETTER Of Your Choice From Above To Get Started : ");
 
-            String choice = "";
-            choice = myScanner.nextLine().trim().toUpperCase();
-
-            try {
-                choice = myScanner.nextLine().trim().toUpperCase();
-                if (choice.isEmpty()) {
-                    System.out.println("Please Choose A Valid Option.");
-                }
-            } catch (Exception e) {
-                System.out.println("Input Error" + e.getMessage());
+            // decalring a choice string to take input from user
+            // trims extra space from start and end, converts to uppercase
+             String choice = myScanner.nextLine().trim().toUpperCase();
+            // if the user does not input their name, the loop is keep running until they do
+             if (choice.isEmpty()) {
+                 System.out.println("\nPlease Choose A Valid Option.");
+                 // take the user back to home menu to choose an option
                 continue;
             }
-
 
             switch (choice) {
                 case "D":
@@ -65,22 +65,26 @@ public class Ledger {
                 case "X":
                     running = false;
                     break;
-                default:
+                default: // if user enters a char that is not D,P,L or X, the defult would be printed
                     System.out.println("Invalid Option. Please Try Again.");
             }
         }
+        // once the user presses x they will be taken out of the whileloop
         System.out.println("Exiting Application. Goodbye!");
     }
 
+    // takes user name and saves it into userName variable
     private void askUserName() {
         System.out.print("Hey There! What's Your Name?");
-        // take user input and save it to the userName variable
-        userName = myScanner.next().trim();
+        // take user input and save it to the userName variable and converts to uppercase
+        userName = myScanner.nextLine().trim();
 
         while (userName.isEmpty()) {
+            // if left empty prompts the user to add input
             System.out.println("Oops, You Forgot To Type In Your Name! Let's Try That Again.");
             userName = myScanner.nextLine().trim();
         }
+
         System.out.println("Welcome , " + userName + "! Let's Get Your Finances Organized!");
     }
 
