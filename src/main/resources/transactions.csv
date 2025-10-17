@@ -1,15 +1,2 @@
 date|time|description|vendor|amount
-2025-10-10|09:12:35|invoice|Mary|1100.00
-2024-09-18|16:50:33|office supplies|ACME Supplies|-34.67
-2023-11-05|08:30:12|morning coffee|Starbucks|-5.75
-2023-04-15|10:13:25|ergonomic keyboard|Amazon|-89.50
-2023-04-15|11:15:00|Invoice 1001 paid|Joe|1500.00
-2022-06-17|18:22:45|electricity|Utility Co|-88.67
-2021-11-02|19:15:30|coffee|Starbucks|-6.20
-2021-05-28|09:50:00|project milestone payment|Client LLC|600.00
-2020-12-14|20:10:27|household items|Target|-45.12
-2020-08-07|08:58:53|printer ink|ACME Supplies|-34.55
-2019-05-19|10:25:18|notebook order|Amazon|-14.35
-2019-04-03|16:48:00|ergonomic mouse|Amazon|-24.99
-2019-03-01|07:33:22|monthly rent|Landlord Co|-1200.00
-2019-01-12|18:40:05|wire transfer received|Stripe|320.50
+

@@ -270,9 +270,6 @@ public class Ledger {
             System.out.println("No transactions to display.");
             return;
         }
-        System.out.println("\n");
-        System.out.println("ALL TRANSACTIONS : ");
-
         for (int i = transactions.size() - 1; i >= 0; i--) {  // newest first
             Transaction t = transactions.get(i);
             System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
