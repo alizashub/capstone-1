@@ -1,10 +1,10 @@
 package com.pluralsight;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -35,7 +35,7 @@ public class Ledger {
         // displays the menu with options
         while (running) {
             System.out.println("                 -----------                          ");
-            System.out.println("                  HOME MENU                           ");
+            System.out.println(BOLD + "                  HOME MENU                           "  + DEFULT);
             System.out.println("                 -----------                          ");
             System.out.println("What Would You Like To Do Today? ");
             System.out.println("B) Find Current Balance ");
@@ -186,7 +186,7 @@ public class Ledger {
 
         // creates a transaction object using the constructor
         Transaction depositTransaction = new Transaction(depositDate, depositTime, depositDescription, depositVendor, depositAmount);
-        System.out.println(userName + " You Are Depositing $ "  + depositAmount  +  " to " + depositVendor + ". \n");
+        System.out.println(userName + " You Are Depositing $ "  + GREEN + depositAmount  + DEFULT + " for " + depositVendor + ". \n");
 
         // writes the transaction object called 'depositTransaction' to transactions.csv file
         repository.saveTransaction(depositTransaction);
@@ -200,7 +200,7 @@ public class Ledger {
     // guides user to add a payment and create a new transaction object, then saves it to repository
     private void makePayment() {
         System.out.println("\n");
-        System.out.println("         " + userName.toUpperCase() + "'S " + " PAYMENT INFORMATION       ");
+        System.out.println( BOLD + "         " + userName.toUpperCase() + "'S " + " PAYMENT INFORMATION       "+ DEFULT);
 
         String paymentDescription = "";
         while (paymentDescription.isEmpty()) {
@@ -248,7 +248,7 @@ public class Ledger {
         String paymentTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
         Transaction paymentTransaction = new Transaction(paymentDate, paymentTime, paymentDescription, paymentVendor, paymentAmount);
-        System.out.println("You Are Paying $" + paymentAmount + " to " + paymentVendor + ". \n");
+        System.out.println("You Are Paying $" + RED +paymentAmount + DEFULT + " to " + paymentVendor + ". \n");
         repository.saveTransaction(paymentTransaction);
         transactions.add(paymentTransaction);
         System.out.println("Payment Transaction Was Recorded Successfully!");
@@ -262,7 +262,7 @@ public class Ledger {
 
         while (inLedger) {
             System.out.println("                  -----------                          ");
-            System.out.println("                  LEDGER MENU                         ");
+            System.out.println( BOLD + "                  LEDGER MENU                         " + DEFULT);
             System.out.println("                  -----------                          ");
             System.out.println("A) View All Transactions");
             System.out.println("D) View Deposits Only");
@@ -299,7 +299,7 @@ public class Ledger {
     // show all transactions
     private void showAll() {
         System.out.println("\n");
-        System.out.println("ALL TRANSACTIONS : ");
+        System.out.println( BOLD + "ALL TRANSACTIONS : " + DEFULT);
 
         if (transactions.isEmpty()) {
             System.out.println("No transactions to display.");
@@ -314,7 +314,7 @@ public class Ledger {
     // shows all deposits
     private void showDeposits() {
         System.out.println("\n");
-        System.out.println("ALL DEPOSITS : ");
+        System.out.println(BOLD + "ALL DEPOSITS : " + DEFULT);
 
         if (transactions.isEmpty()) {
             System.out.println("No Deposit Transactions To Display.");
@@ -324,7 +324,7 @@ public class Ledger {
         for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction t = transactions.get(i);
             if (t.getAmount() > 0) {
-                System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
+                System.out.printf("%s | %s | %s | %s | %s%.2f%s%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(),GREEN,  t.getAmount(), DEFULT );
                 matchFound = true;
             }
         }
@@ -336,13 +336,13 @@ public class Ledger {
     // shows all payments
     private void showPayments() {
         System.out.println("\n");
-        System.out.println("ALL PAYMENTS :");
+        System.out.println(BOLD + "ALL PAYMENTS :"+ DEFULT);
 
         boolean matchFound = false;
         for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction t = transactions.get(i);
             if (t.getAmount() < 0) { // Payments are negative
-                System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
+                System.out.printf("%s | %s | %s | %s | %s%.2f%s%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), RED, t.getAmount(), DEFULT);
                 matchFound = true;
             }
         }
@@ -357,7 +357,7 @@ public class Ledger {
 
         while (inReports) {
             System.out.println("                 -----------                          ");
-            System.out.println("                  REPORT MENU                         ");
+            System.out.println( BOLD + "                  REPORT MENU                         " + DEFULT);
             System.out.println("                 -----------                          ");
             System.out.println("1) Month To Date");
             System.out.println("2) Previous Month");
@@ -402,7 +402,7 @@ public class Ledger {
     // shows transaction from start of the current month up to today
     private void showMonthToDate() {
         System.out.println("\n");
-        System.out.println("MONTH TO DATE REPORT :");
+        System.out.println( BOLD + "MONTH TO DATE REPORT :" + DEFULT);
 
         LocalDate today = LocalDate.now();
         LocalDate firstDayofMonth = today.withDayOfMonth(1); // create a new object with the same year and month, but day set to 1
@@ -431,7 +431,7 @@ public class Ledger {
     private void showPreviousMonth() {
 
         System.out.println("\n");
-        System.out.println("REVIOUS MONTH TRANSACTIONS : ");
+        System.out.println( BOLD + "REVIOUS MONTH TRANSACTIONS : " + DEFULT);
 
 
         // current date eg. 10/16/2025
@@ -468,7 +468,7 @@ public class Ledger {
     // show transaction from Jan 1st of the current year to the current date of the current year
     private void showYearToDate() {
         System.out.println("\n");
-        System.out.println("YEAR TO DATE TRANSACTIONS : ");
+        System.out.println( BOLD + "YEAR TO DATE TRANSACTIONS : " + DEFULT);
 
         // todays date eg. 10/16/2025
         LocalDate today = LocalDate.now();
@@ -498,7 +498,7 @@ public class Ledger {
     // show transactions from the previous year
     private void showPreviousYear() {
         System.out.println("\n");
-        System.out.println("REVIOUS YEAR TRANSACTIONS : ");
+        System.out.println( BOLD + "REVIOUS YEAR TRANSACTIONS : " + DEFULT);
 
         //  todays date eg. 10/16/2025
         LocalDate today = LocalDate.now();
@@ -531,7 +531,7 @@ public class Ledger {
     // show transaction from specifc vendors
     private void searchByVendor() {
         System.out.println("\n");
-        System.out.println("VENDOR TRANSACTIONS :");
+        System.out.println( BOLD + "VENDOR TRANSACTIONS :" + DEFULT);
         System.out.print("Enter Vendor Name To Search: ");
         String searchVendor = myScanner.nextLine().trim();
         System.out.println("Transactions From " + searchVendor);
@@ -555,15 +555,15 @@ public class Ledger {
 
     // defining ANSI codes to control color and formatting - enhancing console output
     // default everything
-//    public static final String DEFULT = "\u001B[0m";
-//
-//    // text colours
+    public static final String DEFULT = "\u001B[0m";
+
+   // text colours
 //    // \OO1B is the escape character and then [31m part is the color itself
-//    private static final String RED = "\u001B[31m";
-//    public static final String GREEN = "\u001B[32m";
-//    public static final String YELLOW = "\u001B[33m";
+    private static final String RED = "\u001B[31m";
+    public static final String GREEN = "\u001B[32m";
+    public static final String YELLOW = "\u001B[33m";
 //
 //    // bold text
-//    private static final String BOLD = "\u001B[1m";
+    private static final String BOLD = "\u001B[1m";
 }
 
