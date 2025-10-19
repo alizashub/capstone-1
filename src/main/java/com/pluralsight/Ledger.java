@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Ledger {
@@ -12,7 +13,6 @@ public class Ledger {
     private TransactionRepository repository;
     // scanner object to take user input
     private Scanner myScanner;
-    //
     private ArrayList<Transaction> transactions;
     // variable to store name of user for personalized messages
     private String userName;
@@ -24,8 +24,10 @@ public class Ledger {
         transactions = repository.readTransactions();
     }
 
+
     // takes user input, shows home menu, asks user for home menu option, keeps user in loop is no name or option is choosen
     public void home() {
+        System.out.println(getRandomGreeting());
         // prompts the user for their name
         askUserName();
         // true keeps the loop running until the user presses X to exit
@@ -36,6 +38,7 @@ public class Ledger {
             System.out.println("                  HOME MENU                           ");
             System.out.println("                 -----------                          ");
             System.out.println("What Would You Like To Do Today? ");
+            System.out.println("B) Find Current Balance ");
             System.out.println("D) Add A Deposit ");
             System.out.println("P) Make A Payment ");
             System.out.println("L) Go To The Ledger ");
@@ -54,6 +57,9 @@ public class Ledger {
             }
 
             switch (choice) {
+                case "B" :
+                    System.out.printf("%s, your current balance is: $%.2f%n", userName, showCurrentBalance());
+                    break;
                 case "D":
                     addDeposit();
                     break;
@@ -74,9 +80,30 @@ public class Ledger {
         System.out.println("Exiting Application. Goodbye!");
     }
 
+    // a string of array for getting random greetings
+    private String[] greetings = {
+            "Hey there, superstar!",
+            "Hey, money maestro!",
+            "Good to see you, financial wizard!",
+            "Howdy, ledger legend!",
+            "Greetings, number cruncher!",
+            "Ahoy! Ready to track your finances?",
+            "Hello there — let’s tame those numbers!",
+            "Welcome! Your ledger awaits." };
+
+    // method to randomize the greetings recived
+    private String getRandomGreeting(){
+        // pick a random index in the array
+        // multiplying math.random and lenght creates the range for the random number eg. if greetings.lenght is 6, the range becomes 0-6 and then generate a random decimal number.
+        // then we cast it into an int cause index number can only be an int
+        int index = (int) (Math.random()*greetings.length);
+        // return the greeting at that random index
+        return greetings[index];
+    }
+
     // takes user name and saves it into userName variable
     private void askUserName() {
-        System.out.print("Hey There! What's Your Name?");
+        System.out.print("Let's get to know you. What's Your Name?");
         // take user input and save it to the userName variable and converts to uppercase
         userName = myScanner.nextLine().trim();
 
@@ -85,8 +112,16 @@ public class Ledger {
             System.out.println("Oops, You Forgot To Type In Your Name! Let's Try That Again.");
             userName = myScanner.nextLine().trim();
         }
-
         System.out.println("Welcome , " + userName + "! Let's Get Your Finances Organized!");
+    }
+
+    // adds all the values in the csv to get the current balance
+    private double showCurrentBalance(){
+        double balance = 0;
+        for (Transaction t : transactions) {
+            balance = balance + t.getAmount();
+        }
+        return balance;
     }
 
     // guides user to add deposit and create a new transaction object and saves to repository
@@ -151,14 +186,13 @@ public class Ledger {
 
         // creates a transaction object using the constructor
         Transaction depositTransaction = new Transaction(depositDate, depositTime, depositDescription, depositVendor, depositAmount);
-        System.out.println(userName + " You Are Depositing $ " + depositAmount + " to " + depositVendor + ". \n");
+        System.out.println(userName + " You Are Depositing $ "  + depositAmount  +  " to " + depositVendor + ". \n");
 
         // writes the transaction object called 'depositTransaction' to transactions.csv file
         repository.saveTransaction(depositTransaction);
 
         // adds the object at the end of the arraylist - if we did not add to arraylist we will have to reload from csv eg. transactionsv = repository.readTransactions();
         transactions.add(depositTransaction);
-
         System.out.println("Deposit Transaction Was Added Successfully!");
         System.out.println("Let's Go Back Home! What Else Would You Like To Do Today?");
     }
@@ -185,7 +219,7 @@ public class Ledger {
             paymentVendor = myScanner.nextLine();
 
             if (paymentVendor.isEmpty()) {
-                System.out.println("Don't Leave Me Hanging! Please Enter A Vendor Name: ");
+                System.out.println("Don't Leave Me Hanging! Please Enter A Vendor Name.");
 
             }
         }
@@ -262,6 +296,7 @@ public class Ledger {
         }
     }
 
+    // show all transactions
     private void showAll() {
         System.out.println("\n");
         System.out.println("ALL TRANSACTIONS : ");
@@ -276,6 +311,7 @@ public class Ledger {
         }
     }
 
+    // shows all deposits
     private void showDeposits() {
         System.out.println("\n");
         System.out.println("ALL DEPOSITS : ");
@@ -292,11 +328,12 @@ public class Ledger {
                 matchFound = true;
             }
         }
-        if (!matchFound){
+        if (!matchFound) {
             System.out.println("No Deposit Transactions To Display");
         }
     }
 
+    // shows all payments
     private void showPayments() {
         System.out.println("\n");
         System.out.println("ALL PAYMENTS :");
@@ -314,7 +351,7 @@ public class Ledger {
         }
     }
 
-
+    // report menu
     private void showReports() {
         boolean inReports = true;
 
@@ -361,7 +398,6 @@ public class Ledger {
             }
         }
     }
-
 
     // shows transaction from start of the current month up to today
     private void showMonthToDate() {
@@ -516,5 +552,18 @@ public class Ledger {
 
         }
     }
+
+    // defining ANSI codes to control color and formatting - enhancing console output
+    // default everything
+//    public static final String DEFULT = "\u001B[0m";
+//
+//    // text colours
+//    // \OO1B is the escape character and then [31m part is the color itself
+//    private static final String RED = "\u001B[31m";
+//    public static final String GREEN = "\u001B[32m";
+//    public static final String YELLOW = "\u001B[33m";
+//
+//    // bold text
+//    private static final String BOLD = "\u001B[1m";
 }
 
