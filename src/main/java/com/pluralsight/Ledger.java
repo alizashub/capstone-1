@@ -34,15 +34,15 @@ public class Ledger {
         boolean running = true;
         // displays the menu with options
         while (running) {
-            System.out.println("                 -----------                          ");
-            System.out.println(BOLD + "                  HOME MENU                           "  + DEFULT);
-            System.out.println("                 -----------                          ");
+            System.out.println( YELLOW + "                 -----------                          " + DEFULT);
+            System.out.println(BOLD + YELLOW + "                  HOME MENU                           "  + DEFULT);
+            System.out.println(YELLOW + "                 -----------                          "+ DEFULT);
             System.out.println("What Would You Like To Do Today? ");
-            System.out.println("B) Find Current Balance ");
+            System.out.println( ITALIC + "B) Find Current Balance " );
             System.out.println("D) Add A Deposit ");
             System.out.println("P) Make A Payment ");
             System.out.println("L) Go To The Ledger ");
-            System.out.println("X) Exit The Program ");
+            System.out.println("X) Exit The Program " + DEFULT);
             // prints user name with text to choose a valid option form the home menu
             System.out.print("\n" + userName + "," + " Type The LETTER Of Your Choice From Above To Get Started : ");
 
@@ -51,7 +51,7 @@ public class Ledger {
             String choice = myScanner.nextLine().trim().toUpperCase();
             // if the user does not input their name, the loop is keep running until they do
             if (choice.isEmpty()) {
-                System.out.println("\nPlease Choose A Valid Option.");
+                System.out.println( RED + "\nPlease Choose A Valid Option."+ DEFULT);
                 // take the user back to home menu to choose an option
                 continue;
             }
@@ -73,7 +73,7 @@ public class Ledger {
                     running = false;
                     break;
                 default: // if user enters a char that is not D,P,L or X, the defult would be printed
-                    System.out.println("Invalid Option. Please Try Again.");
+                    System.out.println(RED + "Invalid Option. Please Try Again." + DEFULT);
             }
         }
         // once the user presses x they will be taken out of the whileloop
@@ -98,7 +98,7 @@ public class Ledger {
         // then we cast it into an int cause index number can only be an int
         int index = (int) (Math.random()*greetings.length);
         // return the greeting at that random index
-        return greetings[index];
+        return BOLD + greetings[index] + DEFULT;
     }
 
     // takes user name and saves it into userName variable
@@ -128,7 +128,7 @@ public class Ledger {
     private void addDeposit() {
         System.out.println("\n");
         // prints the title with username in uppercase
-        System.out.println("         " + userName.toUpperCase() + "'S " + " DEPOSIT INFORMATION       ");
+        System.out.println( BOLD + YELLOW + "         " + userName.toUpperCase() + "'S " + " DEPOSIT INFORMATION       " + DEFULT);
 
         // initilize depositDescription with empty string
         String depositDescription = "";
@@ -140,7 +140,7 @@ public class Ledger {
             depositDescription = (myScanner.nextLine().trim());
             // is checked each time the loop runs
             if (depositDescription.isEmpty()) {
-                System.out.println("\n" + userName + "," + " We Need A Description To Add This Deposit. Let's Try That Again.");
+                System.out.println( RED + "\n" + userName + "," + " We Need A Description To Add This Deposit. Let's Try That Again."+ DEFULT);
             }
         }
 
@@ -154,7 +154,7 @@ public class Ledger {
 
             //prints only if the the user input is still empty
             if (depositVendor.isEmpty()) {
-                System.out.println("Don't Leave Me Hanging! Please Enter A Vendor Name : ");
+                System.out.println( RED + "Don't Leave Me Hanging! Please Enter A Vendor Name : " + DEFULT);
             }
         }
 
@@ -173,10 +173,10 @@ public class Ledger {
                     // exits loop
                     break;
                 } else {
-                    System.out.println("Deposits must be positive. Give it another shot!");
+                    System.out.println( RED + "Deposits must be positive. Give it another shot!" + DEFULT);
                 }
             } catch (NumberFormatException e) { // throws an exception when user enters input that is not numbers
-                System.out.println("That Doesn't Look Like A Valid Number. Let's Try Again. ");
+                System.out.println(RED + "That Doesn't Look Like A Valid Number. Let's Try Again. " + DEFULT);
             }
         }
         // gets the current date and formats it using the datetimeformatter eg. 2025/16/10
@@ -200,7 +200,7 @@ public class Ledger {
     // guides user to add a payment and create a new transaction object, then saves it to repository
     private void makePayment() {
         System.out.println("\n");
-        System.out.println( BOLD + "         " + userName.toUpperCase() + "'S " + " PAYMENT INFORMATION       "+ DEFULT);
+        System.out.println( BOLD + YELLOW +  "         " + userName.toUpperCase() + "'S " + " PAYMENT INFORMATION       "+ DEFULT);
 
         String paymentDescription = "";
         while (paymentDescription.isEmpty()) {
@@ -208,7 +208,7 @@ public class Ledger {
             paymentDescription = myScanner.nextLine().trim();
 
             if (paymentDescription.isEmpty()) {
-                System.out.println("\n" + userName + "," + " We Need A Description To Add This Payment. Let's Try That Again.");
+                System.out.println( RED + "\n" + userName + "," + " We Need A Description To Add This Payment. Let's Try That Again." + DEFULT);
             }
         }
 
@@ -219,7 +219,7 @@ public class Ledger {
             paymentVendor = myScanner.nextLine();
 
             if (paymentVendor.isEmpty()) {
-                System.out.println("Don't Leave Me Hanging! Please Enter A Vendor Name.");
+                System.out.println( RED + "Don't Leave Me Hanging! Please Enter A Vendor Name."+ DEFULT);
 
             }
         }
@@ -236,11 +236,11 @@ public class Ledger {
                     paymentAmount = -Math.abs(paymentAmount);
                     break; // exit loop
                 } else {
-                    System.out.println("Payment must be positive. Give it another shot.");
+                    System.out.println( RED + "Payment must be positive. Give it another shot."+ DEFULT);
                 }
 
             } catch (NumberFormatException e) {
-                System.out.println("That Does Not Look like A Valid Number. Let's Try Again.");
+                System.out.println(RED + "That Does Not Look like A Valid Number. Let's Try Again."+DEFULT);
             }
         }
 
@@ -262,13 +262,13 @@ public class Ledger {
 
         while (inLedger) {
             System.out.println("                  -----------                          ");
-            System.out.println( BOLD + "                  LEDGER MENU                         " + DEFULT);
+            System.out.println( BOLD + YELLOW +  "                  LEDGER MENU                         " + DEFULT);
             System.out.println("                  -----------                          ");
-            System.out.println("A) View All Transactions");
+            System.out.println( ITALIC + "A) View All Transactions");
             System.out.println("D) View Deposits Only");
             System.out.println("P) View Payments Only");
             System.out.println("R) View My Reports");
-            System.out.println("X) Home Menu");
+            System.out.println("X) Home Menu" + DEFULT);
             System.out.print("\n" + userName + "," + " Type The LETTER Of Your Choice From Above To View Your Transaction History : ");
 
             String choice = myScanner.nextLine().trim().toUpperCase();
@@ -290,7 +290,7 @@ public class Ledger {
                     inLedger = false;
                     break;
                 default:
-                    System.out.println("Invalid Option. Please Try Again.");
+                    System.out.println( RED + "Invalid Option. Please Try Again."+ DEFULT);
 
             }
         }
@@ -299,7 +299,7 @@ public class Ledger {
     // show all transactions
     private void showAll() {
         System.out.println("\n");
-        System.out.println( BOLD + "ALL TRANSACTIONS : " + DEFULT);
+        System.out.println( BOLD + YELLOW + "ALL TRANSACTIONS : " + DEFULT);
 
         if (transactions.isEmpty()) {
             System.out.println("No transactions to display.");
@@ -307,14 +307,15 @@ public class Ledger {
         }
         for (int i = transactions.size() - 1; i >= 0; i--) {  // newest first
             Transaction t = transactions.get(i);
-            System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
+            String color = t.getAmount() < 0 ? RED : GREEN;
+            System.out.printf("%s | %s | %s | %s | %s%.2f%s%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), color, t.getAmount(), DEFULT);
         }
     }
 
     // shows all deposits
     private void showDeposits() {
         System.out.println("\n");
-        System.out.println(BOLD + "ALL DEPOSITS : " + DEFULT);
+        System.out.println(BOLD + YELLOW + "ALL DEPOSITS : " + DEFULT);
 
         if (transactions.isEmpty()) {
             System.out.println("No Deposit Transactions To Display.");
@@ -342,7 +343,8 @@ public class Ledger {
         for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction t = transactions.get(i);
             if (t.getAmount() < 0) { // Payments are negative
-                System.out.printf("%s | %s | %s | %s | %s%.2f%s%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), RED, t.getAmount(), DEFULT);
+                String color = t.getAmount() < 0 ? RED : GREEN;
+                System.out.printf("%s | %s | %s | %s | %s%.2f%s%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), color, t.getAmount(), DEFULT);
                 matchFound = true;
             }
         }
@@ -357,15 +359,15 @@ public class Ledger {
 
         while (inReports) {
             System.out.println("                 -----------                          ");
-            System.out.println( BOLD + "                  REPORT MENU                         " + DEFULT);
+            System.out.println( BOLD + YELLOW + "                  REPORT MENU                         " + DEFULT);
             System.out.println("                 -----------                          ");
-            System.out.println("1) Month To Date");
+            System.out.println( ITALIC + "1) Month To Date");
             System.out.println("2) Previous Month");
             System.out.println("3) Year To Date");
             System.out.println("4) Previous Year");
             System.out.println("5) Search By Vendor");
             System.out.println("6) Back To Ledger");
-            System.out.println("0) Back Home");
+            System.out.println("0) Back Home"+ DEFULT);
             System.out.print("\n" + userName + "," + " Type The LETTER Of Your Choice From Above To See Your Report : ");
 
             String choice = myScanner.nextLine().trim();
@@ -394,7 +396,7 @@ public class Ledger {
                     home();
                     break;
                 default:
-                    System.out.println("Invalid option. Please try again.");
+                    System.out.println(RED + "Invalid option. Please try again."+ DEFULT);
             }
         }
     }
@@ -402,11 +404,11 @@ public class Ledger {
     // shows transaction from start of the current month up to today
     private void showMonthToDate() {
         System.out.println("\n");
-        System.out.println( BOLD + "MONTH TO DATE REPORT :" + DEFULT);
+        System.out.println( BOLD + YELLOW +  "MONTH TO DATE REPORT :" + DEFULT);
 
         LocalDate today = LocalDate.now();
         LocalDate firstDayofMonth = today.withDayOfMonth(1); // create a new object with the same year and month, but day set to 1
-        System.out.println("Transactions From " + firstDayofMonth + " " + " to " + today);
+        System.out.println( BOLD + "Transactions From " + firstDayofMonth + " " + " to " + today + DEFULT);
         boolean matchFound = false; // the varible matchFound starts with no matches
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         // looping backwards
@@ -417,7 +419,8 @@ public class Ledger {
             LocalDate transactionDate = LocalDate.parse(t.getDate(), formatter);
             //checks if the date is on or after the first day of the month && if the date is on or before today ( to find if the transaction happened this month )
             if (!transactionDate.isBefore(firstDayofMonth) && !transactionDate.isAfter(today)) {
-                System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
+                String color = t.getAmount() < 0 ? RED : GREEN;
+                System.out.printf("%s | %s | %s | %s | %s%.2f%s%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), color, t.getAmount(), DEFULT);
                 matchFound = true;
             }
         } // loop finished
@@ -431,7 +434,7 @@ public class Ledger {
     private void showPreviousMonth() {
 
         System.out.println("\n");
-        System.out.println( BOLD + "REVIOUS MONTH TRANSACTIONS : " + DEFULT);
+        System.out.println( BOLD + YELLOW + "REVIOUS MONTH TRANSACTIONS : " + DEFULT);
 
 
         // current date eg. 10/16/2025
@@ -443,7 +446,7 @@ public class Ledger {
         // sets day to 1 for the previous month eg. 10/1/2025
         LocalDate firstDayOfPreviousMonth = lastDayOfPreviousMonth.withDayOfMonth(1);
 
-        System.out.println("\nTransactions For " + lastDayOfPreviousMonth.getMonth() + " :");
+        System.out.println( YELLOW + "\nTransactions For " + lastDayOfPreviousMonth.getMonth() + " :" + DEFULT);
 
         boolean matchFound = false;
         // loops backwards through the transactions
@@ -454,7 +457,8 @@ public class Ledger {
             LocalDate transactionDate = LocalDate.parse(t.getDate(), formatter);
 
             if (!transactionDate.isBefore(firstDayOfPreviousMonth) && !transactionDate.isAfter(lastDayOfPreviousMonth)) {
-                System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
+                String color = t.getAmount() < 0 ? RED : GREEN ;
+                System.out.printf("%s | %s | %s | %s | %s%.2f%s%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), color,  t.getAmount(),DEFULT);
                 matchFound = true;
 
             }
@@ -468,14 +472,14 @@ public class Ledger {
     // show transaction from Jan 1st of the current year to the current date of the current year
     private void showYearToDate() {
         System.out.println("\n");
-        System.out.println( BOLD + "YEAR TO DATE TRANSACTIONS : " + DEFULT);
+        System.out.println( BOLD + YELLOW + "YEAR TO DATE TRANSACTIONS : " + DEFULT);
 
         // todays date eg. 10/16/2025
         LocalDate today = LocalDate.now();
         //sets firstdayoftheyear to jan 1st of the current year eg. 1/1/2025
         LocalDate firstDayOfYear = today.withDayOfYear(1);
         // creating a header
-        System.out.println("\nTransactions From " + firstDayOfYear.getMonth() + " " + firstDayOfYear.getYear() + " to " + today.getMonth() + " " + today.getYear());
+        System.out.println( YELLOW + "\nTransactions From " + firstDayOfYear.getMonth() + " " + firstDayOfYear.getYear() + " to " + today.getMonth() + " " + today.getYear()+ DEFULT);
 
         boolean matchFound = false;
         // looping backwards through the transactions
@@ -486,7 +490,8 @@ public class Ledger {
             LocalDate transactionDate = LocalDate.parse(t.getDate(), formatter);
             // checks to see if the date is jan 1st or after and if the date if today or earlier ( eg. range created with Minimum : Jan 1st & Maximum : 16th October )
             if ((!transactionDate.isBefore(firstDayOfYear)) && !transactionDate.isAfter(today)) {
-                System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
+                String color = t.getAmount() < 0 ? RED : GREEN;
+                System.out.printf("%s | %s | %s | %s | %s%.2f%s%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), color, t.getAmount(), DEFULT);
                 matchFound = true;
             }
         }
@@ -498,7 +503,7 @@ public class Ledger {
     // show transactions from the previous year
     private void showPreviousYear() {
         System.out.println("\n");
-        System.out.println( BOLD + "REVIOUS YEAR TRANSACTIONS : " + DEFULT);
+        System.out.println( BOLD + YELLOW + "REVIOUS YEAR TRANSACTIONS : " + DEFULT);
 
         //  todays date eg. 10/16/2025
         LocalDate today = LocalDate.now();
@@ -506,7 +511,7 @@ public class Ledger {
         LocalDate firstDayOfThePreviousYear = today.minusYears(1).withDayOfYear(1);
         // changes current date to day 1, month 1 eg. 1/1/2025 and then subtracts one day eg. 12/31/2024
         LocalDate lastDayPreviousYear = today.withDayOfYear(1).minusDays(1);
-        System.out.println("Transactions From " + firstDayOfThePreviousYear.getYear());
+        System.out.println( YELLOW + "Transactions From " + firstDayOfThePreviousYear.getYear()+ DEFULT);
 
         boolean matchFound = false;
         // looping backwards
@@ -517,7 +522,8 @@ public class Ledger {
             LocalDate transactionDate = LocalDate.parse(t.getDate(), formatter);
             // checks if the date is within the previous year, not before and not after the last day of the previous year. eg. between 1st Jan 2024 to 31st Dec 2024.
             if (!transactionDate.isBefore(firstDayOfThePreviousYear) && !transactionDate.isAfter(lastDayPreviousYear)) {
-                System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
+                String color = t.getAmount() < 0 ? RED : GREEN;
+                System.out.printf("%s | %s | %s | %s | %s%.2f%s%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), color, t.getAmount(), DEFULT);
                 matchFound = true;
             }
 
@@ -542,7 +548,8 @@ public class Ledger {
             Transaction t = transactions.get(i);
 
             if (t.getVendor().equalsIgnoreCase(searchVendor)) {
-                System.out.printf("%s | %s | %s | %s | %.2f%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
+                String color = t.getAmount() < 0 ? RED : GREEN;
+                System.out.printf("%s | %s | %s | %s | %s%.2f%s%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), color, t.getAmount(), DEFULT);
                 matchFound = true;
             }
         }
@@ -562,6 +569,8 @@ public class Ledger {
     private static final String RED = "\u001B[31m";
     public static final String GREEN = "\u001B[32m";
     public static final String YELLOW = "\u001B[33m";
+    public static final String ITALIC = "\u001B[3m";
+
 //
 //    // bold text
     private static final String BOLD = "\u001B[1m";
